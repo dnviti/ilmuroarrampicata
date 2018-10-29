@@ -51,7 +51,7 @@ $("#btn-login").click(function (event) {
 
         console.log(response);
         //alert(response);
-        location.reload();
+        location.href = '?p=1';
     });
 
     request.fail(function (jqXHR, textStatus, errorThrown) {

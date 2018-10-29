@@ -28,6 +28,18 @@ class Page
 
       /*slideout.open();*/';
 
+    function getPage($pnum)
+    {
+        switch ($pnum) {
+            case 7:
+                echo $this->register($pnum);
+                break;
+            case 1:
+                echo $this->home($pnum);
+                break;
+        }
+    }
+
     function login()
     {
         $_components = new Component();
@@ -57,6 +69,12 @@ class Page
         $_components = new Component();
         $_templates = new Template();
 
+        $gridRow_items = [
+            $_components->itemFromColumn('users', 'username', 'text', 'Nome Utente'),
+            $_components->itemFromColumn('users', 'password', 'password', 'Password'),
+            $_components->itemFromColumn('users', 'email', 'email', 'E-Mail')
+        ];
+
         $footer_objs = [
             // generazione Menu (codice in variabile pubblica di classe)
             $_components->javaScript($this->menuJs),
@@ -68,8 +86,7 @@ class Page
             . $_templates->header()
             . $_templates->slideMenu()
             . $_templates->body()
-            . $_components->gridRow($gridRow_btn, 'btnNav')
-            . $_components->itemFromColumn('users', 'id')
+            . $_components->vGridRow($gridRow_items, 'itemsForm')
             . $_components->javaScriptFromFile('slidemenu')
             . $_templates->footer($footer_objs);
 
@@ -97,7 +114,7 @@ class Page
             . $_templates->header()
             . $_templates->slideMenu()
             . $_templates->body()
-            . $_components->gridRow($gridRow_btn, 'btnNav')
+            . $_components->hGridRow($gridRow_btn, 'btnNav')
             . $_components->tableFromQuery('query_report_homepage', 'tbAbbon', 'Ultimi Incassi')
             . $_components->javaScriptFromFile('slidemenu')
             . $_templates->footer($footer_objs);

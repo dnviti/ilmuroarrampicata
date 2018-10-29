@@ -19,7 +19,6 @@ if ($_user->login($GLOBALS["conn"], $_POST["USERNAME"], 'a')) {
 
     $_SESSION["USERNAME"] = $_user->username;
     $_SESSION["IS_ADMIN"] = $_user->isAdmin($GLOBALS["conn"], $_POST["USERNAME"]);
-    //$_SESSION["PAGE"] = 1;
     die($_user->username);
 
 } else {

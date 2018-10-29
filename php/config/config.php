@@ -1,4 +1,7 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
     // File di configurazione dell'applicazione
     // Usare la variabile $_opzione = $_config["opzione"]
     // per leggere / impostare un'opzione (come in connection.php)

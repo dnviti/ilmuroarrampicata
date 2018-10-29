@@ -61,8 +61,9 @@ class Component
         }
     }
 
-    function itemFromColumn($tableName, $colName, $itemType, $class = '', $title = '')
+    function itemFromColumn($tableName, $colName, $itemType, $itemLabel = null, $class = '', $title = '')
     {
+
         $conn = $GLOBALS["conn"];
 
         $query = "SHOW FIELDS FROM $tableName where upper(field) = upper('$colName')";
@@ -73,13 +74,22 @@ class Component
 
                 // get item data
 
-                $itemData = [];
-
                 $itemData = $result->fetch_assoc();
 
                 $result->close();
 
-                $item = '<input type="' . $itemType . '" id="' . $tableName . '_' . $colName . '"  />';
+                $type = $itemData['Type'];
+                preg_match('#\((.*?)\)#', $type, $maxLength);
+
+                $item = '';
+
+                if ($itemLabel != null) {
+                    $item = '<label  for="' . $tableName . '_' . $itemData['Field'] . '">' . $itemLabel . '</label>';
+                }
+
+                $item = $item . '<input maxlength="' . $maxLength[1] . '" value="' . $itemData['Default'] . '" type="' . $itemType . '"  class="form-control" id="' . $tableName . '_' . $itemData['Field'] . '" placeholder="' . $itemData['Field'] . '" aria-nullable="' . $itemData['Null'] . '" />';
+
+                $item = $item . '<br/>';
 
                 return $item;
             }
@@ -89,18 +99,33 @@ class Component
         }
     }
 
-    function gridRow($contentarr = [], $class = '')
+    function hGridRow($contentarr = [], $class = '')
     {
-        $gridRow = '<div class="row ' . $class . '">';
+        $hGridRow = '<div class="row ' . $class . '">';
         foreach ($contentarr as &$content) {
-            $gridRow = $gridRow . '
+            $hGridRow = $hGridRow . '
             <div class="col">
               ' . $content . '
             </div>';
         }
-        $gridRow = $gridRow . '</div>';
+        $hGridRow = $hGridRow . '</div>';
 
-        return $gridRow;
+        return $hGridRow;
+    }
+
+    function vGridRow($contentarr = [], $class = '')
+    {
+        $vGridRow = '';
+        foreach ($contentarr as &$content) {
+            $vGridRow = $vGridRow . '
+            <div class="row">
+                <div class="col">
+                ' . $content . '
+                </div>
+            </div>';
+        }
+
+        return $vGridRow;
     }
 
     function logo($filename)

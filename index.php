@@ -20,13 +20,14 @@ $_pages = new Page();
 //if (!$_SESSION["USER"]->isValidUser($conn, $_SESSION["USERNAME"])) {
 if (isset($_SESSION["USERNAME"]) || isset($_COOKIE["USERNAME"])) {
     // Caricamento pagine
-    switch ($_GET["p"]) {
-        case 7:
-            echo $_pages->register(7);
-            break;
-        case 1:
-            echo $_pages->home(1);
-    }
+    $_pages->getPage($_GET["p"]);
+    // switch ($_GET["p"]) {
+    //     case 7:
+    //         echo $_pages->register(7);
+    //         break;
+    //     case 1:
+    //         echo $_pages->home(1);
+    // }
 
 } else {
     echo $_pages->login();
