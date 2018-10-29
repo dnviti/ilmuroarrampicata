@@ -1,0 +1,92 @@
+/* Custom CSS */
+
+html {
+    touch-action: manipulation;
+}
+
+body {
+    width: 100%;
+    height: 100%;
+}
+
+.container {
+    /*margin-top: 2%;*/
+    max-width: 400px;
+}
+
+table {
+    /*margin-top: 5%;*/
+    font-size: 3vmin;
+    text-align: center;
+}
+
+.btnNav button {
+    margin-top: 3%;
+    font-size: 5vmin !important;
+}
+
+h2 {
+    font-size: 7vmin;
+}
+
+.tbAbbon {
+    margin-top: 5%;
+}
+
+.tbAbbon.row {
+    text-align: center;
+}
+
+.tbAbbon.col {
+    font-size: 7vmin;
+}
+
+#f-login .row {
+    margin-top: 15px !important;
+}
+
+#f-login button,
+#f-login input {
+    font-size: 1.3rem;
+    height: 3rem;
+}
+
+/* OVERRIDES */
+
+.hamburger-inner,
+.hamburger-inner:after,
+.hamburger-inner:before {
+    position: absolute;
+    width: 15px !important;
+    height: 3px !important;
+}
+
+.hamburger--slider .hamburger-inner {
+    top: 0px !important;
+}
+
+.hamburger:focus {
+    outline: none !important;
+}
+
+.hamburger {
+    padding: 10px 0px 15px 0px !important;
+    margin-left: 7px !important;
+}
+
+.hamburger--slider .hamburger-inner:after {
+    top: 10px !important;
+}
+
+.hamburger--slider .hamburger-inner:before {
+    top: 5px !important;
+}
+
+.hamburger--slider.is-active .hamburger-inner:after {
+    transform: translate3d(0, -10px, 0) rotate(-90deg) !important;
+}
+
+.hamburger-box {
+    width: 15px !important;
+    height: 15px !important;
+}
