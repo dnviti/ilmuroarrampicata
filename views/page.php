@@ -70,7 +70,7 @@ class Page
         $_templates = new Template();
 
         $gridRow_items = [
-            $_components->itemFromColumn('users', 'username', 'text', 'Nome Utente'),
+            $_components->itemFromColumn('users', 'username', 'text', 'Nome Utente', 'readonly'),
             $_components->itemFromColumn('users', 'password', 'password', 'Password'),
             $_components->itemFromColumn('users', 'email', 'email', 'E-Mail')
         ];
