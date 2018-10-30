@@ -61,7 +61,7 @@ class Component
         }
     }
 
-    function itemFromColumn($tableName, $colName, $itemType, $itemLabel = null, $class = '', $title = '')
+    function itemFromColumn($tableName, $colName, $itemType, $itemLabel = null, $attrib, $class = '', $title = '')
     {
 
         $conn = $GLOBALS["conn"];
@@ -87,7 +87,7 @@ class Component
                     $item = '<label  for="' . $tableName . '_' . $itemData['Field'] . '">' . $itemLabel . '</label>';
                 }
 
-                $item = $item . '<input maxlength="' . $maxLength[1] . '" value="' . $itemData['Default'] . '" type="' . $itemType . '"  class="form-control" id="' . $tableName . '_' . $itemData['Field'] . '" placeholder="' . $itemData['Field'] . '" aria-nullable="' . $itemData['Null'] . '" />';
+                $item = $item . '<input maxlength="' . $maxLength[1] . '" value="' . $itemData['Default'] . '" type="' . $itemType . '"  class="form-control" id="' . $tableName . '_' . $itemData['Field'] . '" placeholder="' . $itemData['Field'] . '" aria-nullable="' . $itemData['Null'] . '" '.$attrib.' />';
 
                 $item = $item . '<br/>';
 
