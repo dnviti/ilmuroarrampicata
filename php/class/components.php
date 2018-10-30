@@ -61,7 +61,7 @@ class Component
         }
     }
 
-    function itemFromColumn($tableName, $colName, $itemType, $itemLabel = null, $attrib, $class = '', $title = '')
+    function itemFromColumn($tableName, $colName, $itemType, $itemLabel = null, $attrib = null, $class = '', $title = '')
     {
 
         $conn = $GLOBALS["conn"];
