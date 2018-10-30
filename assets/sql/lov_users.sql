@@ -1,0 +1,1 @@
+select nome || ' ' || cognome, username from users;

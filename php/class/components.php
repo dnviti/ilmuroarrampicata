@@ -61,6 +61,50 @@ class Component
         }
     }
 
+    function selectFromQuery($queryName, $search = false, $class = '', $title = '')
+    {
+        $conn = $GLOBALS["conn"];
+
+        $query = file_get_contents($GLOBALS["paths"]["sql"] . $queryName . '.sql');
+
+        if (isset($query)) {
+
+            if ($result = $conn->query($query)) {
+
+            //     <select class="custom-select">
+            //     <option selected>Open this select menu</option>
+            //     <option value="1">One</option>
+            //     <option value="2">Two</option>
+            //     <option value="3">Three</option>
+            //   </select>
+
+//             <select class="selectpicker">
+//   <option>Mustard</option>
+//   <option>Ketchup</option>
+//   <option>Relish</option>
+// </select>
+
+                // get table data
+                $select = '';
+
+                while ($tableRows = $result->fetch_assoc()) {
+                    $select = $select . '<select class="selectpicker">';
+                    foreach ($tableRows as &$value) {
+                        $select = $select . '<option>' . $value . '</option>';
+                    }
+                    $select = $select . '</select>';
+                }
+                
+                $result->close();
+
+                return $select;
+            }
+
+        } else {
+            return "ERROR: No query defined";
+        }
+    }
+
     function itemFromColumn($tableName, $colName, $itemType, $itemLabel = null, $attrib = null, $class = '', $title = '')
     {
 
