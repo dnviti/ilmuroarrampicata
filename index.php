@@ -2,7 +2,7 @@
 session_start();
 // Define what is necessary in requires.php file
 require_once("php/config/requires.php");
-
+#prova
 //_SESSION["USER"] = new User();
 //$_SESSION["USERNAME"] = '';
 //$_SESSION["USERNAME"] = null;
