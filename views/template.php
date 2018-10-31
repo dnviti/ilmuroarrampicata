@@ -50,20 +50,29 @@ class Template
                 <div class="row">
                     <a href="?p=1" id="m-p1" class="list-group-item list-group-item-action">Home</a>
                 </div>
-                    <h6>Operatività</h6>
+                    <h6>Gestione Incassi</h6>
                     <div class="row">
                         <a href="?p=2" id="m-p2" class="list-group-item list-group-item-action">Nuovo Incasso</a>
                         <a href="?p=3" id="m-p3" class="list-group-item list-group-item-action">Lista Incassi</a>
+                        <!--
                         <a href="?p=4" id="m-p4" class="list-group-item list-group-item-action">Lista Abbonamenti</a>
                         <a href="?p=5" id="m-p5" class="list-group-item list-group-item-action">Lista Abbonati</a>
-                    </div>';
-        if ($_SESSION["IS_ADMIN"] == true) {
-            $slidenav = $slidenav . '<h6>Amministrazione</h6>
+                        -->
+                    </div>
+                
+                <h6>Gestione Utenti</h6>
                 <div class="row">
                     <a href="?p=6" id="m-p6" class="list-group-item list-group-item-action">Lista Utenti</a>
                     <a href="?p=7" id="m-p7" class="list-group-item list-group-item-action">Registrazione Utente</a>
                 </div>';
-        }
+
+        // if ($_SESSION["IS_ADMIN"] == true) {
+        //     $slidenav = $slidenav . '<h6>Amministrazione</h6>
+        //         <div class="row">
+        //             <a href="?p=6" id="m-p6" class="list-group-item list-group-item-action">Lista Utenti</a>
+        //             <a href="?p=7" id="m-p7" class="list-group-item list-group-item-action">Registrazione Utente</a>
+        //         </div>';
+        // }
         if ($_SESSION["USERNAME"] != '') {
             $slidenav = $slidenav . '<h6></h6>
                     <div class="row">

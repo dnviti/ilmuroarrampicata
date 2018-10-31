@@ -9,11 +9,6 @@ body {
     height: 100%;
 }
 
-.container {
-    /*margin-top: 2%;*/
-    max-width: 400px;
-}
-
 table {
     /*margin-top: 5%;*/
     font-size: 3vmin;

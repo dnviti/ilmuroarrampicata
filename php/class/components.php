@@ -61,8 +61,9 @@ class Component
         }
     }
 
-    function selectFromQuery($queryName, $search = false, $class = '', $title = '')
+    function selectFromQuery($queryName, $type = 'classic', $search = false, $class = '', $title = '')
     {
+        // $type ['classic', 'search']
         $conn = $GLOBALS["conn"];
 
         $query = file_get_contents($GLOBALS["paths"]["sql"] . $queryName . '.sql');
@@ -86,15 +87,48 @@ class Component
 
                 // get table data
                 $select = '';
+                $lovReturn = [];
+                $lovDisplay = [];
 
-                while ($tableRows = $result->fetch_assoc()) {
-                    $select = $select . '<select class="selectpicker">';
-                    foreach ($tableRows as &$value) {
-                        $select = $select . '<option>' . $value . '</option>';
-                    }
-                    $select = $select . '</select>';
+                switch ($type) {
+                    case 'classic':
+                        $select = $select . '<select class="custom-select">';
+                        
+                        while ($tableRows = $result->fetch_array()) {
+                            
+                            array_push($lovReturn, $tableRows[0]);
+                            array_push($lovDisplay, $tableRows[1]);                        
+                                
+                        }
+                        
+                        $lovValues['d'] = $lovDisplay;
+                        $lovValues['r'] = $lovReturn;
+                        echo '<pre>';
+                        var_dump($lovValues);
+                        echo '</pre>';
+
+                        for ($i = 0; $i < count($lovValues); $i++){
+                            $select = $select . '<option value="' . $return . '">' . $display . '</option>';
+                        }
+
+                        foreach ($lovValues as $key => $value) {
+                            $select = $select . '<option value="' . $value[0] . '">' . $value[1] . '</option>';
+                        }
+
+                            $select = $select . '</select>';
+                    break;
+                    case 'search':
+                        while ($tableRows = $result->fetch_assoc()) {
+                            $select = $select . '<select class="selectpicker">';
+                            foreach ($tableRows as &$value) {
+                                $select = $select . '<option>' . $value . '</option>';
+                            }
+                            $select = $select . '</select>';
+                        }
+                        break;
+
                 }
-                
+
                 $result->close();
 
                 return $select;
@@ -131,7 +165,7 @@ class Component
                     $item = '<label  for="' . $tableName . '_' . $itemData['Field'] . '">' . $itemLabel . '</label>';
                 }
 
-                $item = $item . '<input maxlength="' . $maxLength[1] . '" value="' . $itemData['Default'] . '" type="' . $itemType . '"  class="form-control" id="' . $tableName . '_' . $itemData['Field'] . '" placeholder="' . $itemData['Field'] . '" aria-nullable="' . $itemData['Null'] . '" '.$attrib.' />';
+                $item = $item . '<input maxlength="' . $maxLength[1] . '" value="' . $itemData['Default'] . '" type="' . $itemType . '"  class="form-control" id="' . $tableName . '_' . $itemData['Field'] . '" placeholder="' . $itemData['Field'] . '" aria-nullable="' . $itemData['Null'] . '" ' . $attrib . ' />';
 
                 $item = $item . '<br/>';
 
@@ -186,14 +220,9 @@ class Component
         return $logo;
     }
 
-    function buttonPrimary($text, $class = '')
+    function button($text, $type = 'primary', $page = '', $class = '')
     {
-        return '<button type="button" class="btn btn-primary btn-lg btn-block ' . $class . '">' . $text . '</button>';
-    }
-
-    function buttonSecondary($text, $class = '')
-    {
-        return '<button type="button" class="btn btn-secondary btn-lg btn-block ' . $class . '">' . $text . '</button>';
+        return '<button type="button" onclick="javascript:location.href=\'?p='.$page.'\'" class="btn btn-'.$type.' btn-lg btn-block '.$class.'">'.$text.'</button>';
     }
 
     function javaScript($js)
