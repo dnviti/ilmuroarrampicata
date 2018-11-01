@@ -20,7 +20,8 @@ $_pages = new Page();
 //if (!$_SESSION["USER"]->isValidUser($conn, $_SESSION["USERNAME"])) {
 if (isset($_SESSION["USERNAME"]) || isset($_COOKIE["USERNAME"])) {
     // Caricamento pagine
-    $_pages->getPage($_GET["p"]);
+    $pnum = !isset($_GET["p"]) ? 1 : $_GET["p"];
+    $_pages->getPage($pnum);
     // switch ($_GET["p"]) {
     //     case 7:
     //         echo $_pages->register(7);
