@@ -19,6 +19,7 @@ class Template
             $_paths["third-part"] . "slideout/slideout.css",
             $_paths["third-part"] . "hamburgers/hamburgers.min.css",
             $_paths["third-part"] . "holdon/HoldOn.min.css",
+            $_paths["third-part"] . "bootstrap-select/bootstrap-select.min.css",
             $_paths["css"] . "style.css"
         ]) . '
 
@@ -28,6 +29,8 @@ class Template
             $_paths["third-part"] . "bootstrap/bootstrap.min.js",
             $_paths["third-part"] . "slideout/slideout.min.js",
             $_paths["third-part"] . "holdon/HoldOn.min.js",
+            $_paths["third-part"] . "popper/popper.min.js",
+            $_paths["third-part"] . "bootstrap-select/bootstrap-select.min.js",
             $_paths["js"] . "main.js"
         ]) . '
             </head>
@@ -39,6 +42,7 @@ class Template
 
     function slideMenu()
     {
+        $_components = new Component();
         $slidenav = '        <nav id="menu">
         <div class="container">
             <div class="row">
@@ -50,10 +54,10 @@ class Template
                 <div class="row">
                     <a href="?p=1" id="m-p1" class="list-group-item list-group-item-action">Home</a>
                 </div>
-                    <h6>Gestione Incassi</h6>
+                    <h6>Gestione Ingressi</h6>
                     <div class="row">
-                        <a href="?p=2" id="m-p2" class="list-group-item list-group-item-action">Nuovo Incasso</a>
-                        <a href="?p=3" id="m-p3" class="list-group-item list-group-item-action">Lista Incassi</a>
+                        <a href="?p=2" id="m-p2" class="list-group-item list-group-item-action">Nuovo Ingresso</a>
+                        <a href="?p=3" id="m-p3" class="list-group-item list-group-item-action">Lista Ingressi</a>
                         <!--
                         <a href="?p=4" id="m-p4" class="list-group-item list-group-item-action">Lista Abbonamenti</a>
                         <a href="?p=5" id="m-p5" class="list-group-item list-group-item-action">Lista Abbonati</a>
@@ -74,11 +78,18 @@ class Template
         //         </div>';
         // }
         if ($_SESSION["USERNAME"] != '') {
-            $slidenav = $slidenav . '<h6></h6>
+            $slidenav = $slidenav . ' <span class="slideout-spacer"></span>
                     <div class="row">
                         <a href="#" id="slnav-logout" class="list-group-item list-group-item-action">Logout</a>
                     </div>';
         }
+        $slidenav = $slidenav.
+             $_components->hGridRow([
+              $_components->logo('logo_muro_no_sfondo.png'),
+              $_components->logo('logo_solo_cai.png'),
+              $_components->logo('solo_scritta_cai.png')  
+            ])
+            ;
         $slidenav = $slidenav . '
               </div>
         </div>

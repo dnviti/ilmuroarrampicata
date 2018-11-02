@@ -62,7 +62,12 @@ class Page
             . $_templates->header()
             . $_templates->body()
             . '<br>'
-            . $_components->logo('logo.jpg')
+            . $_components->hGridRow([
+              $_components->logo('logo_muro_no_sfondo.png'),
+              $_components->logo('logo_solo_cai.png'),
+              $_components->logo('solo_scritta_cai.png')  
+            ])
+            //. $_components->hGridRow(logo('logo.jpg')
             . $_components->htmlFromFile('login')
             . $_components->javaScriptFromFile('login')
             . $_templates->footer();
@@ -76,10 +81,10 @@ class Page
         $_templates = new Template();
 
         $gridRow_items = [
-            $_components->itemFromColumn('users', 'username', 'text', 'Nome Utente', 'readonly'),
+            $_components->itemFromColumn('users', 'username', 'text', 'Nome Utente'),
             $_components->itemFromColumn('users', 'password', 'password', 'Password'),
             $_components->itemFromColumn('users', 'email', 'email', 'E-Mail'),
-            $_components->selectFromQuery('lov_users')
+            $_components->selectFromQuery('lov_users', 'search')
         ];
 
         $footer_objs = [
@@ -106,7 +111,7 @@ class Page
         $_templates = new Template();
 
         $gridRow_btn = [
-            $_components->button("Nuovo Incasso","Primary","2"),
+            $_components->button("Nuovo Ingresso","Primary","2"),
             $_components->button("Lista Utenti","Secondary","6")
         ];
 

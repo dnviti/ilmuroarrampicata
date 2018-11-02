@@ -72,62 +72,39 @@ class Component
 
             if ($result = $conn->query($query)) {
 
-            //     <select class="custom-select">
-            //     <option selected>Open this select menu</option>
-            //     <option value="1">One</option>
-            //     <option value="2">Two</option>
-            //     <option value="3">Three</option>
-            //   </select>
-
-//             <select class="selectpicker">
-//   <option>Mustard</option>
-//   <option>Ketchup</option>
-//   <option>Relish</option>
-// </select>
-
                 // get table data
                 $select = '';
                 $lovReturn = [];
                 $lovDisplay = [];
+                
 
                 switch ($type) {
                     case 'classic':
                         $select = $select . '<select class="custom-select">';
-                        
-                        while ($tableRows = $result->fetch_array()) {
-                            
-                            array_push($lovReturn, $tableRows[0]);
-                            array_push($lovDisplay, $tableRows[1]);                        
-                                
-                        }
-                        
-                        $lovValues['d'] = $lovDisplay;
-                        $lovValues['r'] = $lovReturn;
-                        echo '<pre>';
-                        var_dump($lovValues);
-                        echo '</pre>';
 
-                        for ($i = 0; $i < count($lovValues); $i++){
-                            $select = $select . '<option value="' . $return . '">' . $display . '</option>';
-                        }
-
-                        foreach ($lovValues as $key => $value) {
-                            $select = $select . '<option value="' . $value[0] . '">' . $value[1] . '</option>';
-                        }
-
-                            $select = $select . '</select>';
                     break;
                     case 'search':
-                        while ($tableRows = $result->fetch_assoc()) {
-                            $select = $select . '<select class="selectpicker">';
-                            foreach ($tableRows as &$value) {
-                                $select = $select . '<option>' . $value . '</option>';
-                            }
-                            $select = $select . '</select>';
-                        }
+                        $select = $select . '<select class="selectpicker">';
                         break;
 
                 }
+
+                while ($tableRows = $result->fetch_array()) {
+                    array_push($lovDisplay, $tableRows[0]); 
+                    array_push($lovReturn, $tableRows[1]);                       
+                        
+                }
+
+                $lovValues[0] = $lovDisplay;
+                $lovValues[1] = $lovReturn;
+
+                for ($i = 0; $i < count($lovValues[0]); $i++){
+                    $display = $lovValues[0][$i];
+                    $return = $lovValues[1][$i];
+                    $select = $select . '<option value="' . $return . '">' . $display . '</option>';
+                }
+
+                $select = $select . '</select>';
 
                 $result->close();
 
