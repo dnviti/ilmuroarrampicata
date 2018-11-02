@@ -61,7 +61,7 @@ class Component
         }
     }
 
-    function selectFromQuery($queryName, $type = 'classic', $search = false, $class = '', $title = '')
+    function selectFromQuery($queryName, $type = 'classic', $label = null, $search = false, $class = '', $title = '')
     {
         // $type ['classic', 'search']
         $conn = $GLOBALS["conn"];
@@ -76,15 +76,19 @@ class Component
                 $select = '';
                 $lovReturn = [];
                 $lovDisplay = [];
-                
+
+                if ($label != null) {
+                    $select = '<label  for="' . $queryName . '">' . $label . '</label>';
+                }
+
 
                 switch ($type) {
                     case 'classic':
-                        $select = $select . '<select class="custom-select">';
+                        $select = $select . '<select class="custom-select" id="'.$queryName.'">';
 
                     break;
                     case 'search':
-                        $select = $select . '<select class="selectpicker">';
+                        $select = $select . '<br><select class="selectpicker" data-live-search="true" id="'.$queryName.'">';
                         break;
 
                 }

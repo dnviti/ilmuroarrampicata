@@ -94,3 +94,7 @@ h2 {
 .slideout-spacer {
     display: block;
 }
+
+button.btn.dropdown-toggle.btn-light {
+    height: 38px;
+}

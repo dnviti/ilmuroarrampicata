@@ -84,7 +84,7 @@ class Page
             $_components->itemFromColumn('users', 'username', 'text', 'Nome Utente'),
             $_components->itemFromColumn('users', 'password', 'password', 'Password'),
             $_components->itemFromColumn('users', 'email', 'email', 'E-Mail'),
-            $_components->selectFromQuery('lov_users', 'search')
+            $_components->selectFromQuery('lov_ruoli', 'classic', 'Ruolo')
         ];
 
         $footer_objs = [

@@ -16,21 +16,21 @@ class Template
 
                     ' . $_assets->getCss([
             $_paths["third-part"] . "bootstrap/bootstrap.min.css",
+            $_paths["third-part"] . "bootstrap-select/bootstrap-select.min.css",
             $_paths["third-part"] . "slideout/slideout.css",
             $_paths["third-part"] . "hamburgers/hamburgers.min.css",
             $_paths["third-part"] . "holdon/HoldOn.min.css",
-            $_paths["third-part"] . "bootstrap-select/bootstrap-select.min.css",
             $_paths["css"] . "style.css"
         ]) . '
 
                 <!-- JS -->
                 ' . $_assets->getJs([
             $_paths["third-part"] . "jquery/jquery-3.3.1.min.js",
+            $_paths["third-part"] . "popper/popper.min.js",
             $_paths["third-part"] . "bootstrap/bootstrap.min.js",
+            $_paths["third-part"] . "bootstrap-select/bootstrap-select.min.js",
             $_paths["third-part"] . "slideout/slideout.min.js",
             $_paths["third-part"] . "holdon/HoldOn.min.js",
-            $_paths["third-part"] . "popper/popper.min.js",
-            $_paths["third-part"] . "bootstrap-select/bootstrap-select.min.js",
             $_paths["js"] . "main.js"
         ]) . '
             </head>
