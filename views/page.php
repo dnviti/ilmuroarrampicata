@@ -86,7 +86,7 @@ class Page
             $_components->itemFromColumn('users', 'email', 'email', 'E-Mail'),
             $_components->selectFromQuery('lov_ruoli', 'classic', 'Ruolo')
         ];
-
+/* asdasd */
         $footer_objs = [
             // generazione Menu (codice in variabile pubblica di classe)
             $_components->javaScript($this->menuJs),

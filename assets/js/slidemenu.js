@@ -14,7 +14,7 @@ $("#slnav-logout").click(function (event) {
 
     options = {
         theme: "sk-cube-grid",
-        message: 'Uscita in corso...',
+        message: "Uscita in corso...",
         backgroundColor: "#ccb300",
         textColor: "black"
     };
@@ -25,7 +25,7 @@ $("#slnav-logout").click(function (event) {
     request = $.ajax({
         url: "php/actions/logout.php",
         type: "post",
-        data: ''
+        data: ""
     });
 
     // Callback handler that will be called on success
