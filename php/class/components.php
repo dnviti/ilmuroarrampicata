@@ -1,14 +1,13 @@
 <?php
 class Component
 {
-    function tableFromQuery($queryName, $class = '', $title = '')
+    public function tableFromQuery($queryName, $id, $class = '', $title = '')
     {
         $conn = $GLOBALS["conn"];
 
         $query = file_get_contents($GLOBALS["paths"]["sql"] . $queryName . '.sql');
 
         if (isset($query)) {
-
             if ($result = $conn->query($query)) {
 
                 // get table column names
@@ -16,7 +15,8 @@ class Component
                 $tableCols = $result->fetch_fields();
                 $tableHeaders = '<thead class="thead-light"><tr>';
                 foreach ($tableCols as &$value) {
-                    $tableHeaders = $tableHeaders . '<th>' . $value->name . '</th>';
+                    $colName = str_replace('_', ' ', $value->name);
+                    $tableHeaders = $tableHeaders . '<th>' . $colName . '</th>';
                 }
                 $tableHeaders = $tableHeaders . '</tr></thead>';
 
@@ -45,7 +45,7 @@ class Component
                 }
 
                 $table = $table . '
-                        <table class="table table-light">
+                        <table id="'.$id.'" class="table table-striped table-bordered table-light">
                             ' . $tableHeaders . '
                             ' . $tableBody . '
                         </table>
@@ -55,13 +55,12 @@ class Component
 
                 return $table;
             }
-
         } else {
             return "ERROR: No query defined";
         }
     }
 
-    function selectFromQuery($queryName, $type = 'classic', $label = null, $search = false, $class = '', $title = '')
+    public function selectFromQuery($queryName, $name, $type = 'classic', $label = null, $search = false, $class = '', $title = '')
     {
         // $type ['classic', 'search']
         $conn = $GLOBALS["conn"];
@@ -69,7 +68,6 @@ class Component
         $query = file_get_contents($GLOBALS["paths"]["sql"] . $queryName . '.sql');
 
         if (isset($query)) {
-
             if ($result = $conn->query($query)) {
 
                 // get table data
@@ -81,28 +79,26 @@ class Component
                     $select = '<label  for="' . $queryName . '">' . $label . '</label>';
                 }
 
-
                 switch ($type) {
                     case 'classic':
-                        $select = $select . '<select class="custom-select" id="'.$queryName.'">';
+                        $select = $select . '<select class="custom-select" name="'. strtoupper($name) .'" id="'.$queryName.'">';
 
                     break;
                     case 'search':
-                        $select = $select . '<br><select class="selectpicker" data-live-search="true" id="'.$queryName.'">';
+                        $select = $select . '<br><select class="selectpicker" name="'. strtoupper($name) .'" data-live-search="true" id="'.$queryName.'">';
                         break;
 
                 }
 
                 while ($tableRows = $result->fetch_array()) {
-                    array_push($lovDisplay, $tableRows[0]); 
-                    array_push($lovReturn, $tableRows[1]);                       
-                        
+                    array_push($lovDisplay, $tableRows[0]);
+                    array_push($lovReturn, $tableRows[1]);
                 }
 
                 $lovValues[0] = $lovDisplay;
                 $lovValues[1] = $lovReturn;
 
-                for ($i = 0; $i < count($lovValues[0]); $i++){
+                for ($i = 0; $i < count($lovValues[0]); $i++) {
                     $display = $lovValues[0][$i];
                     $return = $lovValues[1][$i];
                     $select = $select . '<option value="' . $return . '">' . $display . '</option>';
@@ -114,21 +110,18 @@ class Component
 
                 return $select;
             }
-
         } else {
             return "ERROR: No query defined";
         }
     }
 
-    function itemFromColumn($tableName, $colName, $itemType, $itemLabel = null, $attrib = null, $class = '', $title = '')
+    public function itemFromColumn($tableName, $colName, $itemType, $itemLabel = null, $attrib = null, $class = '', $title = '')
     {
-
         $conn = $GLOBALS["conn"];
 
         $query = "SHOW FIELDS FROM $tableName where upper(field) = upper('$colName')";
 
         if (isset($query)) {
-
             if ($result = $conn->query($query)) {
 
                 // get item data
@@ -140,25 +133,35 @@ class Component
                 $type = $itemData['Type'];
                 preg_match('#\((.*?)\)#', $type, $maxLength);
 
+                if (!isset($maxLength[1])) {
+                    $maxLength[1] = '999';
+                }
+
                 $item = '';
 
                 if ($itemLabel != null) {
-                    $item = '<label  for="' . $tableName . '_' . $itemData['Field'] . '">' . $itemLabel . '</label>';
+                    $item = '<label  for="' . $tableName . '_' . $itemData['Field'] . '">' . str_replace('_', ' ', $itemLabel) . '</label>';
                 }
 
-                $item = $item . '<input maxlength="' . $maxLength[1] . '" value="' . $itemData['Default'] . '" type="' . $itemType . '"  class="form-control" id="' . $tableName . '_' . $itemData['Field'] . '" placeholder="' . $itemData['Field'] . '" aria-nullable="' . $itemData['Null'] . '" ' . $attrib . ' />';
+                switch($itemType){
+                    case 'textarea':
+                        $item = $item . '<textarea maxlength="' . $maxLength[1] . '" class="form-control" name="'. strtoupper($itemData['Field']) .'" id="' . $tableName . '_' . $itemData['Field'] . '" placeholder="' . str_replace('_', ' ', $itemData['Field']) . '" aria-nullable="' . $itemData['Null'] . '" ' . $attrib . '>' . $itemData['Default'] . '</textarea>';
+                    break;
+                    default:
+                        $item = $item . '<input maxlength="' . $maxLength[1] . '" value="' . $itemData['Default'] . '" type="' . $itemType . '"  class="form-control" name="'. strtoupper($itemData['Field']) .'" id="' . $tableName . '_' . $itemData['Field'] . '" placeholder="' . str_replace('_', ' ', $itemData['Field']) . '" aria-nullable="' . $itemData['Null'] . '" ' . $attrib . ' />';
+                }
+                
 
                 $item = $item . '<br/>';
 
                 return $item;
             }
-
         } else {
             return "ERROR: No query defined";
         }
     }
 
-    function hGridRow($contentarr = [], $class = '')
+    public function hGridRow($contentarr = [], $class = '')
     {
         $hGridRow = '<div class="row ' . $class . '">';
         foreach ($contentarr as &$content) {
@@ -172,7 +175,7 @@ class Component
         return $hGridRow;
     }
 
-    function vGridRow($contentarr = [], $class = '')
+    public function vGridRow($contentarr = [], $class = '')
     {
         $vGridRow = '';
         foreach ($contentarr as &$content) {
@@ -187,9 +190,8 @@ class Component
         return $vGridRow;
     }
 
-    function logo($filename)
+    public function logo($filename)
     {
-
         $logo = '
         <div class="row">
             <div class="col">
@@ -201,28 +203,46 @@ class Component
         return $logo;
     }
 
-    function button($text, $type = 'primary', $page = '', $class = '')
+    public function button($text, $type = 'primary', $page = '', $class = '', $id='')
     {
-        return '<button type="button" onclick="javascript:location.href=\'?p='.$page.'\'" class="btn btn-'.$type.' btn-lg btn-block '.$class.'">'.$text.'</button>';
+        if ($page != '') {
+            $page = ' onclick="javascript:location.href=\'?p='.$page.'\'"';
+        }
+        return '<button type="button"'.$page.' id="'.$id.'" class="btn btn-'.$type.' btn-lg btn-block '.$class.'">'.$text.'</button>';
     }
 
-    function javaScript($js)
+    public function javaScript($js)
     {
         $scriptJs = '<script>' . $js . '</script>';
         return $scriptJs;
     }
 
-    function javaScriptFromFile($jsPath)
+    public function javaScriptFromFile($jsPath)
     {
         $js = file_get_contents($GLOBALS["paths"]["js"] . $jsPath . '.js');
         $scriptJs = '<script>' . $js . '</script>';
         return $scriptJs;
     }
 
-    function htmlFromFile($htmlPath)
+    public function htmlFromFile($htmlPath)
     {
         $html = file_get_contents($GLOBALS["paths"]["html"] . $htmlPath . '.html');
         return $html;
     }
+    
+    public function separator($height)
+    {
+        $separator = '<br style="margin-top:'.$height.'px">';
+        return $separator;
+    }
+    public function form($contentarr = [], $id, $class = '')
+    {
+        $form = '<form id="'.$id.'">';
+        foreach ($contentarr as &$content) {
+            $form = $form . $content;
+        }
+        $form = $form . '</form>';
+
+        return $form;
+    }
 }
-?>

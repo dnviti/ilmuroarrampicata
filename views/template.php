@@ -2,7 +2,7 @@
 
 class Template
 {
-    function header()
+    public function header()
     {
         $_paths = $GLOBALS["paths"];
         $_assets = new Asset();
@@ -20,6 +20,7 @@ class Template
             $_paths["third-part"] . "slideout/slideout.css",
             $_paths["third-part"] . "hamburgers/hamburgers.min.css",
             $_paths["third-part"] . "holdon/HoldOn.min.css",
+            $_paths["third-part"] . "DataTables/DataTables-1.10.18/css/dataTables.bootstrap4.min.css",
             $_paths["css"] . "style.css"
         ]) . '
 
@@ -31,6 +32,8 @@ class Template
             $_paths["third-part"] . "bootstrap-select/bootstrap-select.min.js",
             $_paths["third-part"] . "slideout/slideout.min.js",
             $_paths["third-part"] . "holdon/HoldOn.min.js",
+            $_paths["third-part"] . "DataTables/datatables.min.js",
+            $_paths["third-part"] . "DataTables/DataTables-1.10.18/js/dataTables.bootstrap4.min.js",
             $_paths["js"] . "main.js"
         ]) . '
             </head>
@@ -40,7 +43,7 @@ class Template
         return $header;
     }
 
-    function slideMenu()
+    public function slideMenu()
     {
         $_components = new Component();
         $slidenav = '        <nav id="menu">
@@ -87,7 +90,7 @@ class Template
              $_components->hGridRow([
               $_components->logo('logo_muro_no_sfondo.png'),
               $_components->logo('logo_solo_cai.png'),
-              $_components->logo('solo_scritta_cai.png')  
+              $_components->logo('solo_scritta_cai.png')
             ])
             ;
         $slidenav = $slidenav . '
@@ -97,7 +100,7 @@ class Template
         return $slidenav;
     }
 
-    function body()
+    public function body()
     {
         $body = '<main id="panel">';
         if (isset($_SESSION["USERNAME"])) {
@@ -126,7 +129,7 @@ class Template
         return $body;
     }
 
-    function footer($objs = [])
+    public function footer($objs = [])
     {
         //$_assets = new Asset();
         $footer = '
@@ -145,6 +148,4 @@ class Template
         ';
         return $footer;
     }
-
 }
-?>
