@@ -1,1 +1,0 @@
-SELECT tipo, id FROM anagrafica_incassi
