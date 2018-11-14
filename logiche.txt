@@ -1,0 +1,11 @@
+LOGICHE e CONTROLLI:
+
+1. per uno stesso utente non possono essere inseriti più di 2 ingressi prova(anagrafica_incassi.id=1), 
+
+2. in fase di inserimento dell'incasso deve essere facilmente selezionabile l'utente tra quelli presenti in anagrafica (sarebbe comodo un campo di ricerca "libero" che preseleziona i risultati, tipo barra di ricerca di gmail), chiaramente il campo è obbligatorio e vincolato da users, ma tanto c'è la chiave esterna per questo
+
+3. appena selezionato l'utente tramite punto 2., dovrebbero comparire i principali dati anagrafici (email, tessera_cai, anno_tessera), con un alert (schermata rossa?, scritta aggiuntiva?) se anno_tessera<to_char(add_months(sysdate,-3),'yyyy')
+
+4. l'utente con ruolo 0 (solo visualizzazione) potrà esclusivamente vedere (e non modificare) la pagina di gestione utente (maschera 3 dell'immagine che ti avevo mandato)
+
+5. sarebbe comodo poter esportare il report completo e l'anagrafica utenti su file excel o csv
