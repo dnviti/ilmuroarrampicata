@@ -26,3 +26,18 @@ function readCookie(name) {
 function eraseCookie(name) {
     createCookie(name, "", -1);
 }
+
+function getQueryValue(sql) {
+    $.ajax({
+        type: "POST",
+        url: "query.php",
+        data: {
+            "action": "diklat",
+            "diklat": diklat
+        },
+        cache: false,
+        success: function (msg) {
+            $("#angkatan").html(msg);
+        }
+    });
+}

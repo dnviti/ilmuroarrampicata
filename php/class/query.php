@@ -2,7 +2,7 @@
     class Query
     {
 
-        function getValidUser($conn){
+        function getQueryValue($conn){
 
             $user = $_SESSION["username"];
             $pass = $_SESSION["password"];
