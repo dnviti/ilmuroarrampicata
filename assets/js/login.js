@@ -144,8 +144,11 @@ $(document).ready(function () {
     $("#cookiesOn").val(cookies);
 
     createCookie("COOKIES", cookies, 30);
+<<<<<<< HEAD
 });
 
 $("#change-pass").click(function () {
     console.log("changing password");
+=======
+>>>>>>> e5a08dc4f6f9c331ad7d16fd3bc73e918f6d3adf
 });
