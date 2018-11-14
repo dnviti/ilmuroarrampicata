@@ -1,0 +1,61 @@
+.slideout-menu {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    width: 256px;
+    min-height: 100vh;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+    z-index: 0;
+    display: none;
+    touch-action: auto;
+}
+
+.slideout-menu-left {
+    left: 0;
+}
+
+.slideout-menu-right {
+    right: 0;
+}
+
+.slideout-panel {
+    position: relative;
+    z-index: 1;
+    will-change: transform;
+    background-color: #FFF;
+    /* A background-color is required */
+    min-height: 100vh;
+}
+
+.slideout-open,
+.slideout-open body,
+.slideout-open .slideout-panel {
+    overflow: hidden;
+    box-shadow: -2px 0px 2px 0px #c5c5c5 !important;
+}
+
+.slideout-open .slideout-menu {
+    display: block;
+}
+
+#menu {
+    background: whitesmoke;
+}
+
+#menu ul li {
+    list-style: none;
+}
+
+#menu .list-group .row {
+    margin-top: 2% !important;
+}
+
+#menu a {
+    border-left: none !important;
+    border-radius: 0px !important;
+}
+
+#menu h6 {
+    margin-top: 6%;
+}

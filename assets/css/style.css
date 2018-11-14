@@ -1,0 +1,125 @@
+/* Custom CSS */
+
+html {
+  touch-action: manipulation;
+}
+
+body {
+  width: 100%;
+  height: 100%;
+  background-color: #fddd00;
+}
+
+table {
+  /*margin-top: 5%;*/
+  font-size: 3vmin;
+  text-align: center;
+}
+
+.btnNav button {
+  margin-top: 3%;
+  font-size: 5vmin !important;
+}
+
+h2 {
+  font-size: 7vmin;
+}
+
+.tbContainer {
+  margin-top: 5%;
+}
+
+.tbContainer.row {
+  text-align: center;
+}
+
+.tbContainer.col {
+  font-size: 7vmin;
+}
+
+#f-login .row {
+  margin-top: 15px !important;
+}
+
+#f-login button,
+#f-login input {
+  font-size: 1.3rem;
+  height: 3rem;
+}
+
+#change-pass {
+  cursor: pointer;
+}
+
+#change-pass:hover {
+  background-color: #dbdfe2;
+}
+
+input[type='date']:before {
+  color: #9b757d;
+  content: attr(placeholder);
+}
+
+input[type='date'].full:before {
+  color: black;
+  content: '' !important;
+}
+
+/* OVERRIDES */
+
+.hamburger-inner,
+.hamburger-inner:after,
+.hamburger-inner:before {
+  position: absolute;
+  width: 15px !important;
+  height: 3px !important;
+}
+
+.hamburger--slider .hamburger-inner {
+  top: 0px !important;
+}
+
+.hamburger:focus {
+  outline: none !important;
+}
+
+.hamburger {
+  padding: 10px 0px 15px 0px !important;
+  margin-left: 7px !important;
+}
+
+.hamburger--slider .hamburger-inner:after {
+  top: 10px !important;
+}
+
+.hamburger--slider .hamburger-inner:before {
+  top: 5px !important;
+}
+
+.hamburger--slider.is-active .hamburger-inner:after {
+  transform: translate3d(0, -10px, 0) rotate(-90deg) !important;
+}
+
+.hamburger-box {
+  width: 15px !important;
+  height: 15px !important;
+}
+
+.slideout-panel {
+  background-color: whitesmoke !important;
+}
+
+.slideout-spacer {
+  display: block;
+}
+
+button.btn.dropdown-toggle.btn-light {
+  height: 38px;
+  background-color: #ffffff;
+  border: 1px solid #ced4da;
+}
+
+.bootstrap-select:not([class*='col-']):not([class*='form-control']):not(.input-group-btn) {
+  width: 100%;
+  top: -24px;
+}
