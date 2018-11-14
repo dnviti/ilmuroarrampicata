@@ -28,7 +28,7 @@ class Page
 
       /*slideout.open();*/';
 
-    function getPage($pnum)
+    public function getPage($pnum)
     {
         switch ($pnum) {
             case 7:
@@ -43,10 +43,13 @@ class Page
             case 3:
                 echo $this->lista_incassi($pnum);
                 break;
+            case 2:
+                echo $this->nuovo_ingresso($pnum);
+                break;
         }
     }
 
-    function login()
+    public function login()
     {
         $_components = new Component();
         $_templates = new Template();
@@ -65,7 +68,7 @@ class Page
             . $_components->hGridRow([
               $_components->logo('logo_muro_no_sfondo.png'),
               $_components->logo('logo_solo_cai.png'),
-              $_components->logo('solo_scritta_cai.png')  
+              $_components->logo('solo_scritta_cai.png')
             ])
             //. $_components->hGridRow(logo('logo.jpg')
             . $_components->htmlFromFile('login')
@@ -75,16 +78,13 @@ class Page
         return $page;
     }
 
-    function register($pnum)
+    public function register($pnum)
     {
         $_components = new Component();
         $_templates = new Template();
 
-        $gridRow_items = [
-            $_components->itemFromColumn('users', 'username', 'text', 'Nome Utente'),
-            $_components->itemFromColumn('users', 'password', 'password', 'Password'),
-            $_components->itemFromColumn('users', 'email', 'email', 'E-Mail'),
-            $_components->selectFromQuery('lov_ruoli', 'classic', 'Ruolo')
+        $gridForm_btn = [
+            $_components->button('Crea Utente', 'primary', '', '', 'btn-register')
         ];
 
         $footer_objs = [
@@ -94,25 +94,105 @@ class Page
             $_components->javaScript('$("#m-p' . $pnum . '").addClass("active")')
         ];
 
+        $form_items = [
+            $_components->vGridRow([
+                $_components->hGridRow([
+                    $_components->itemFromColumn('users', 'nome', 'text'),
+                    $_components->itemFromColumn('users', 'cognome', 'text'),
+                ]),
+                $_components->hGridRow([
+                    $_components->itemFromColumn('users', 'data_nascita', 'date'),
+                    $_components->itemFromColumn('users', 'anno_tessera', 'text')
+                ]),
+                $_components->hGridRow([
+                    $_components->itemFromColumn('users', 'tessera_CAI', 'text'),
+                    $_components->itemFromColumn('users', 'sez_tessera', 'text')
+                ]),
+                $_components->hGridRow([
+                    $_components->itemFromColumn('users', 'username', 'text'),
+                    $_components->itemFromColumn('users', 'password', 'password'),
+                ]),
+                $_components->hGridRow([
+                    $_components->itemFromColumn('users', 'email', 'email'),
+                    $_components->selectFromQuery('lov_ruoli', 'id_role'),
+                ]),
+                $_components->hGridRow([
+                    $_components->itemFromColumn('users', 'note', 'textarea')
+                ]),
+            ], 'f_register_items'),
+            $_components->hGridRow($gridForm_btn),
+            //Hidden Elements
+            $_components->itemFromColumn('users', 'id_userre', 'hidden', $_SESSION["USER_ID"])
+        ];
+
         $page = ''
             . $_templates->header()
             . $_templates->slideMenu()
             . $_templates->body()
-            . $_components->vGridRow($gridRow_items, 'itemsForm')
+            . $_components->form($form_items, 'f-register')
+            . $_components->javaScriptFromFile('register')
             . $_components->javaScriptFromFile('slidemenu')
             . $_templates->footer($footer_objs);
 
         return $page;
     }
 
-    function home($pnum)
+    public function nuovo_ingresso($pnum)
+    {
+        $_components = new Component();
+        $_templates = new Template();
+
+        $gridForm_btn = [
+            $_components->button('Registra Incasso', 'primary', '', '', 'btn-save-ingresso')
+        ];
+
+        $footer_objs = [
+            // generazione Menu (codice in variabile pubblica di classe)
+            $_components->javaScript($this->menuJs),
+            // colorazione menu attivo
+            $_components->javaScript('$("#m-p' . $pnum . '").addClass("active")')
+        ];
+
+        $form_items = [
+            $_components->vGridRow([
+                $_components->hGridRow([
+                    $_components->selectFromQuery('lov_users', 'id_user', 'search'),
+                    $_components->selectFromQuery('lov_tipo_incasso', 'id_tipo', 'classic'),
+                ]),
+                $_components->hGridRow([
+                    $_components->itemFromColumn('registro_incassi', 'valore', 'number'),
+                    $_components->itemFromColumn('registro_incassi', 'data', 'date')
+                    //$_components->selectFromQuery('lov_ruoli', 'id_role'),
+                ]),
+                $_components->hGridRow([
+                    $_components->itemFromColumn('registro_incassi', 'note', 'textarea')
+                ]),
+            ], 'f_register_items'),
+            $_components->hGridRow($gridForm_btn),
+            //Hidden Elements
+            $_components->itemFromColumn('registro_incassi', 'id_userre', 'hidden', $_SESSION["USER_ID"])
+        ];
+
+        $page = ''
+            . $_templates->header()
+            . $_templates->slideMenu()
+            . $_templates->body()
+            . $_components->form($form_items, 'f-ingresso')
+            . $_components->javaScriptFromFile('save_ingresso')
+            . $_components->javaScriptFromFile('slidemenu')
+            . $_templates->footer($footer_objs);
+
+        return $page;
+    }
+
+    public function home($pnum)
     {
         $_components = new Component();
         $_templates = new Template();
 
         $gridRow_btn = [
-            $_components->button("Nuovo Ingresso","Primary","2"),
-            $_components->button("Lista Utenti","Secondary","6")
+            $_components->button("Nuovo Incasso", "primary", "2"),
+            $_components->button("Lista Utenti", "secondary", "6")
         ];
 
         $footer_objs = [
@@ -127,21 +207,22 @@ class Page
             . $_templates->slideMenu()
             . $_templates->body()
             . $_components->hGridRow($gridRow_btn, 'btnNav')
-            . $_components->tableFromQuery('query_report_homepage_where', 'tbAbbon', 'Ingressi Autorizzati Oggi')
+            . $_components->tableFromQuery('query_report_homepage_where', 'table_ing_oggi', 'tbContainer', 'Ingressi Autorizzati Oggi')
             . $_components->javaScriptFromFile('slidemenu')
+            . $_components->javaScript('$(document).ready(function() {$("#table_ing_oggi").DataTable()})')
             . $_templates->footer($footer_objs);
 
         return $page;
     }
 
 
-    function lista_utenti($pnum)
+    public function lista_utenti($pnum)
     {
         $_components = new Component();
         $_templates = new Template();
 
         $gridRow_btn = [
-            $_components->button("Nuovo Utente","Primary","7")
+            $_components->button("Nuovo Utente", "Primary", "7")
         ];
 
         $footer_objs = [
@@ -156,21 +237,22 @@ class Page
             . $_templates->slideMenu()
             . $_templates->body()
             . $_components->hGridRow($gridRow_btn, 'btnNav')
-            . $_components->tableFromQuery('query_anagrafica_utenti', 'tbAbbon', 'Lista Utenti')
+            . $_components->tableFromQuery('query_anagrafica_utenti', 'table_utenti', 'tbContainer', 'Lista Utenti')
             . $_components->javaScriptFromFile('slidemenu')
+            . $_components->javaScript('$(document).ready(function() {$("#table_utenti").DataTable()})')
             . $_templates->footer($footer_objs);
 
         return $page;
     }
 
 
-    function lista_incassi($pnum)
+    public function lista_incassi($pnum)
     {
         $_components = new Component();
         $_templates = new Template();
 
         $gridRow_btn = [
-            $_components->button("Nuovo Incasso","Primary","2")
+            $_components->button("Nuovo Incasso", "Primary", "2")
         ];
 
         $footer_objs = [
@@ -185,12 +267,11 @@ class Page
             . $_templates->slideMenu()
             . $_templates->body()
             . $_components->hGridRow($gridRow_btn, 'btnNav')
-            . $_components->tableFromQuery('query_report_completo', 'tbAbbon', 'Lista Utenti')
+            . $_components->tableFromQuery('query_report_completo', 'table_incassi', 'tbContainer', 'Lista Incassi')
             . $_components->javaScriptFromFile('slidemenu')
+            . $_components->javaScript('$(document).ready(function() {$("#table_incassi").DataTable()})')
             . $_templates->footer($footer_objs);
 
         return $page;
     }
 }
-
-?>

@@ -18,7 +18,7 @@ $("#btn-login").click(function (event) {
 
     options = {
         theme: "sk-cube-grid",
-        message: 'Login in corso...',
+        message: "Login in corso...",
         backgroundColor: "#ccb300",
         textColor: "black"
     };
@@ -37,7 +37,7 @@ $("#btn-login").click(function (event) {
         // Log a message to the console
         options = {
             theme: "sk-cube-grid",
-            message: 'Login effettuato. Caricamento della Home...',
+            message: "Login effettuato. Caricamento della Home...",
             backgroundColor: "#ccb300",
             textColor: "black"
         };
@@ -45,13 +45,13 @@ $("#btn-login").click(function (event) {
         HoldOn.open(options);
 
         // setting cookies
-        if ($("#cookiesOnBtn").attr("aria-pressed") == 'true') {
+        if ($("#cookiesOnBtn").attr("aria-pressed") == "true") {
             document.cookie = "USERNAME=" + $("#USERNAME").val();
         }
 
         console.log(response);
         //alert(response);
-        location.href = '?p=1';
+        location.href = "?p=1";
     });
 
     request.fail(function (jqXHR, textStatus, errorThrown) {
@@ -59,8 +59,8 @@ $("#btn-login").click(function (event) {
 
         options = {
             theme: "custom",
-            content: '', //Image
-            message: '<img src="assets/img/login-error.png"><br><span style="font-weight: bolder">' + errorThrown + '<br><button type="submit" id="btn-close-holdon" class="btn btn-dark" style="margin-top: 10px;font-weight: bolder" onclick="HoldOn.close()">Torna al Login</button>',
+            content: "", //Image
+            message: "<img src=\"assets/img/login-error.png\"><br><span style=\"font-weight: bolder\">" + errorThrown + "<br><button type=\"submit\" id=\"btn-close-holdon\" class=\"btn btn-dark\" style=\"margin-top: 10px;font-weight: bolder\" onclick=\"HoldOn.close()\">Torna al Login</button>",
             backgroundColor: "#c82333",
             textColor: "white"
         };
@@ -85,7 +85,7 @@ $("#btn-login").click(function (event) {
 
 });
 
-$("#cookiesOnBtn").on('click', function (e) {
+$("#cookiesOnBtn").on("click", function (e) {
 
     var cookies = "false";
 
@@ -118,7 +118,7 @@ $("#cookiesOnBtn").on('click', function (e) {
 
     $("#cookiesOn").val(cookies);
 
-    createCookie("COOKIES", cookies, 30)
+    createCookie("COOKIES", cookies, 30);
     //document.cookie = "COOKIES=" + cookies;
 
 });
@@ -126,7 +126,7 @@ $("#cookiesOnBtn").on('click', function (e) {
 $(document).ready(function () {
     var cookies = "false";
 
-    if (readCookie("COOKIES") == 'true') {
+    if (readCookie("COOKIES") == "true") {
         $("#cookiesOnBtn").html("Ricordami: Sì");
         $("#cookiesOnBtn").removeClass("btn-danger");
         $("#cookiesOnBtn").addClass("btn-success");
@@ -143,5 +143,9 @@ $(document).ready(function () {
 
     $("#cookiesOn").val(cookies);
 
-    createCookie("COOKIES", cookies, 30)
-})
+    createCookie("COOKIES", cookies, 30);
+});
+
+$("#change-pass").click(function () {
+    console.log("changing password");
+});

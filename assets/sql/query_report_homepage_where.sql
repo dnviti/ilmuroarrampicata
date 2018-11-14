@@ -1,6 +1,6 @@
 select concat(a.cognome,' ',a.nome) as Utente,
 i.tipo as Tipo,
-DATE_FORMAT(r.data, "%d/%m/%Y") as Data,
+DATE_FORMAT(truncate(date_add(truncate(r.data, 0),interval i.gg_validita day),0), "%d/%m/%Y") as Scadenza,
 concat(r.valore,' €') as Valore
 from users a
 join registro_incassi r on r.id_user=a.id

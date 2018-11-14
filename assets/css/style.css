@@ -25,15 +25,15 @@ h2 {
     font-size: 7vmin;
 }
 
-.tbAbbon {
+.tbContainer {
     margin-top: 5%;
 }
 
-.tbAbbon.row {
+.tbContainer.row {
     text-align: center;
 }
 
-.tbAbbon.col {
+.tbContainer.col {
     font-size: 7vmin;
 }
 
@@ -45,6 +45,14 @@ h2 {
 #f-login input {
     font-size: 1.3rem;
     height: 3rem;
+}
+
+#change-pass {
+    cursor: pointer;
+}
+
+#change-pass:hover {
+    background-color: #dbdfe2;
 }
 
 /* OVERRIDES */
@@ -97,4 +105,11 @@ h2 {
 
 button.btn.dropdown-toggle.btn-light {
     height: 38px;
+    background-color: #ffffff;
+    border: 1px solid #ced4da;
+}
+
+.bootstrap-select:not([class*=col-]):not([class*=form-control]):not(.input-group-btn) {
+    width: 100%;
+    top: -24px;
 }

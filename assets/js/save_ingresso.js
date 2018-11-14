@@ -1,4 +1,4 @@
-$("#slnav-logout").click(function (event) {
+$("#btn-save-ingresso").click(function (event) {
 
     event.preventDefault();
 
@@ -12,38 +12,37 @@ $("#slnav-logout").click(function (event) {
         request.abort();
     }
 
+    var $form = $("#f-ingresso");
+
+    var serializedData = $form.serialize();
+
     options = {
         theme: "sk-cube-grid",
-        message: "Uscita in corso...",
+        message: "Registrazione Utente in corso...",
         backgroundColor: "#ccb300",
         textColor: "black"
     };
 
     HoldOn.open(options);
-    //alert(serializedData);
+    //console.log(serializedData);
 
     request = $.ajax({
-        url: "php/actions/logout.php",
+        url: "php/actions/save_ingresso.php",
         type: "post",
-        data: ""
+        data: serializedData
     });
 
     // Callback handler that will be called on success
     request.done(function (response, textStatus, jqXHR) {
-        //console.log(response);
-        //alert(response);
-        location.reload();
+        HoldOn.close();
+        alert("Ingresso registrato");
+        console.log(response);
     });
 
     request.fail(function (jqXHR, textStatus, errorThrown) {
-        HoldOn.close(options);
-        alert(textStatus);
-        //alert("Errore sconosciuto, riprovare");
-        // Per debug
-        /*console.error(
-            "The following error occurred: " +
-            textStatus, errorThrown
-        );*/
+        HoldOn.close();
+        alert("Errore: " + errorThrown);
+        console.log(errorThrown);
     });
 
     request.always(function () {

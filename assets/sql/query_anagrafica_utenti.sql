@@ -1,17 +1,17 @@
-select concat(a.cognome,' ',a.nome) as Utente, 
+select concat(a.cognome, '</br>', a.nome) as Utente, 
 	/*
 	a.username, 
 	a.password, a.email, a.data_nascita,
 	r.descri as ruolo,
 	*/
-	a.tessera_cai as 'Tessera CAI', 
-	#a.sez_tessera, 
-	a.anno_tessera as 'Anno Tessera',
+	concat(a.tessera_cai, '</br>', a.anno_tessera) as Tessera_CAI, 
+	a.sez_tessera as Sez_Tessera
+	#a.anno_tessera as Anno_Tessera,
 	#s.username as referente, l.datare, a.note,
-	#c.tipo as 'Ult. mov.', 
-	#i.valore as 'Ult. val.', 
-	#DATE_FORMAT(i.data, "%d/%m/%Y") as 'Ult. Accesso'
-	concat(c.tipo,' ',DATE_FORMAT(i.data, "%d/%m/%Y")) as 'Ult. mov.'
+	#c.tipo as Ult._mov., 
+	#i.valore as Ult._val., 
+	#DATE_FORMAT(i.data, "%d/%m/%Y") as Ult._Accesso
+	#concat(c.tipo,' ',DATE_FORMAT(i.data, "%d/%m/%Y")) as Ult_Mov
 from users a
 join log_users l on a.id=l.id_user
 join users s on l.id_userre=s.id

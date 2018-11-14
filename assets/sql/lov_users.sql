@@ -1,4 +1,4 @@
 select
     concat(nome, ' ', cognome) as d,
-    username as r
+    id as r
 from users;

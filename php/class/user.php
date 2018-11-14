@@ -2,11 +2,14 @@
 class User
 {
     public $username;
+    public $user_id;
 
-    function register()
+    public function register($params)
     {
-        $sql = "INSERT INTO users (" . implode(",", array_keys($params)) . ") VALUES (" . implode("','", $params) . ")";
-        return $sql;
+        $conn = $GLOBALS["conn"];
+        //var_dump($params);
+        $sql = "INSERT INTO users (" . implode(",", array_keys($params)) . ") VALUES ('" . implode("','", $params) . "')";
+        $sqlLog = "INSERT INTO log_users (id_user, id_userre) VALUES (".$params[0].")";
         if ($conn->query($sql) === true) {
             return true;
         } else {
@@ -14,22 +17,49 @@ class User
         }
     }
 
-    function login($conn, $user, $pass)
+    public function recoverPass($params)
     {
-        $pass = password_hash($pass, PASSWORD_DEFAULT);
-        $sql = "SELECT username FROM users WHERE upper(username) = upper('$user') and password is not null";
-
-        $userRow = $conn->query($sql);
-
-        if ($userRow->num_rows > 0) {
-            $this->username = $user;
+        $newPass = $params[2];
+        $username = $params[0];
+        $conn = $GLOBALS["conn"];
+        //var_dump($params);
+        $sql = "UPDATE users set password = '$newPass' where upper(username) = upper('$username')";
+        if ($conn->query($sql) === true) {
             return true;
+        } else {
+            return "Error: " . $conn->error;
+        }
+    }
+
+    public function login($conn, $user, $pass)
+    {
+        $sql = "SELECT password, id FROM users WHERE upper(username) = upper('$user')";
+
+        //var_dump($sql);
+
+        $result = $conn->query($sql);
+
+        if ($result->num_rows > 0) {
+            $queryRes = $result->fetch_array();
+            $passHash = $queryRes[0];
+            
+            $userid = $queryRes[1];
+
+            $pass = password_verify($pass, $passHash);
+            if ($pass) {
+                $this->username = $user;
+                $this->user_id = $userid;
+
+                return true;
+            } else {
+                return false;
+            }
         } else {
             return false;
         }
     }
 
-    function isValid($conn, $user)
+    public function isValid($conn, $user)
     {
         $sql = "SELECT 1 FROM users WHERE upper(username) = upper('$user')";
         $result = $conn->query($sql);
@@ -40,7 +70,7 @@ class User
         }
     }
 
-    function isAdmin($conn, $user = null)
+    public function isAdmin($conn, $user = null)
     {
         $sql = "SELECT 1 FROM users WHERE upper(username) = upper('$user') and id_role = 2";
         $result = $conn->query($sql);
@@ -51,4 +81,3 @@ class User
         }
     }
 }
-?>
