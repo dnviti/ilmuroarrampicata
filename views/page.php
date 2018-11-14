@@ -114,7 +114,7 @@ class Page
                 ]),
                 $_components->hGridRow([
                     $_components->itemFromColumn('users', 'email', 'email'),
-                    $_components->selectFromQuery('lov_ruoli', 'id_role'),
+                    $_components->selectFromQuery('lov/lov_ruoli', 'id_role', 'classic', null, 'Ruolo'),
                 ]),
                 $_components->hGridRow([
                     $_components->itemFromColumn('users', 'note', 'textarea')
@@ -156,8 +156,8 @@ class Page
         $form_items = [
             $_components->vGridRow([
                 $_components->hGridRow([
-                    $_components->selectFromQuery('lov_users', 'id_user', 'search'),
-                    $_components->selectFromQuery('lov_tipo_incasso', 'id_tipo', 'classic'),
+                    $_components->selectFromQuery('lov/lov_users', 'id_user', 'search', null, 'Utente'),
+                    $_components->selectFromQuery('lov/lov_tipo_incasso', 'id_tipo', 'classic', null, 'Tipo Incasso'),
                 ]),
                 $_components->hGridRow([
                     $_components->itemFromColumn('registro_incassi', 'valore', 'number'),
@@ -207,7 +207,7 @@ class Page
             . $_templates->slideMenu()
             . $_templates->body()
             . $_components->hGridRow($gridRow_btn, 'btnNav')
-            . $_components->tableFromQuery('query_report_homepage_where', 'table_ing_oggi', 'tbContainer', 'Ingressi Autorizzati Oggi')
+            . $_components->tableFromQuery('report/report_homepage', 'table_ing_oggi', 'tbContainer', 'Ingressi Autorizzati Oggi')
             . $_components->javaScriptFromFile('slidemenu')
             . $_components->javaScript('$(document).ready(function() {$("#table_ing_oggi").DataTable()})')
             . $_templates->footer($footer_objs);
@@ -237,7 +237,7 @@ class Page
             . $_templates->slideMenu()
             . $_templates->body()
             . $_components->hGridRow($gridRow_btn, 'btnNav')
-            . $_components->tableFromQuery('query_anagrafica_utenti', 'table_utenti', 'tbContainer', 'Lista Utenti')
+            . $_components->tableFromQuery('report/report_utenti', 'table_utenti', 'tbContainer', 'Lista Utenti')
             . $_components->javaScriptFromFile('slidemenu')
             . $_components->javaScript('$(document).ready(function() {$("#table_utenti").DataTable()})')
             . $_templates->footer($footer_objs);
@@ -267,7 +267,7 @@ class Page
             . $_templates->slideMenu()
             . $_templates->body()
             . $_components->hGridRow($gridRow_btn, 'btnNav')
-            . $_components->tableFromQuery('query_report_completo', 'table_incassi', 'tbContainer', 'Lista Incassi')
+            . $_components->tableFromQuery('report/report_completo', 'table_incassi', 'tbContainer', 'Lista Incassi')
             . $_components->javaScriptFromFile('slidemenu')
             . $_components->javaScript('$(document).ready(function() {$("#table_incassi").DataTable()})')
             . $_templates->footer($footer_objs);

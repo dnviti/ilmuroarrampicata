@@ -60,7 +60,7 @@ class Component
         }
     }
 
-    public function selectFromQuery($queryName, $name, $type = 'classic', $label = null, $search = false, $class = '', $title = '')
+    public function selectFromQuery($queryName, $name, $type = 'classic', $label = null, $nullDisplay = 'Select Option', $nullValue = '', $search = false, $class = '', $title = '')
     {
         // $type ['classic', 'search']
         $conn = $GLOBALS["conn"];
@@ -81,11 +81,11 @@ class Component
 
                 switch ($type) {
                     case 'classic':
-                        $select = $select . '<select class="custom-select" name="'. strtoupper($name) .'" id="'.$queryName.'">';
+                        $select = $select . '<select class="custom-select" name="'. strtoupper($name) .'" id="'.explode('/', $queryName)[1].'">';
 
                     break;
                     case 'search':
-                        $select = $select . '<br><select class="selectpicker" name="'. strtoupper($name) .'" data-live-search="true" id="'.$queryName.'">';
+                        $select = $select . '<br><select class="selectpicker" name="'. strtoupper($name) .'" data-live-search="true" id="'.explode('/', $queryName)[1].'">';
                         break;
 
                 }
@@ -97,6 +97,8 @@ class Component
 
                 $lovValues[0] = $lovDisplay;
                 $lovValues[1] = $lovReturn;
+
+                $select = $select . '<option value="'.$nullValue.'" selected disabled>' . $nullDisplay . '</option>';
 
                 for ($i = 0; $i < count($lovValues[0]); $i++) {
                     $display = $lovValues[0][$i];
@@ -163,6 +165,34 @@ class Component
                 $item = $item . '<br/>';
 
                 return $item;
+            }
+        } else {
+            return "ERROR: No query defined";
+        }
+    }
+    
+    public function valueFromQuery($query)
+    {
+        $conn = $GLOBALS["conn"];
+
+        //$query = file_get_contents($GLOBALS["paths"]["sql"] . $queryName . '.sql');
+        
+        if (isset($query)) {
+            if ($result = $conn->query($query)) {
+
+
+                // get table data
+                $valueArray = [];
+
+                while ($tableRows = $result->fetch_assoc()) {
+                    array_push($valueArray, $tableRows);
+                }
+
+                $result->close();
+
+                $jsonData = json_encode($valueArray);
+                
+                return $jsonData;
             }
         } else {
             return "ERROR: No query defined";

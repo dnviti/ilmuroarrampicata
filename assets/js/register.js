@@ -50,3 +50,18 @@ $("#btn-register").click(function (event) {
     });
 
 });
+
+// altro javascript
+var userArr = ["", ""];
+$("#users_Nome, #users_Cognome").on("keyup", function () {
+    
+    if ($(this).attr("ID") == "users_Nome") {
+        userArr[0] = $(this).val();
+    }
+    if ($(this).attr("ID") == "users_Cognome") {
+        userArr[1] = $(this).val();
+    }
+
+    $("#users_Username").val(userArr[0].toLowerCase() + "." + userArr[1].toLowerCase());
+
+});

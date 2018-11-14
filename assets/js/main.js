@@ -1,3 +1,20 @@
+$(document).ready(function () {
+    $("input[type=date]").each(function () {
+        if ($(this).val().length > 0) {
+            $(this).addClass("full");
+        } else {
+            $(this).removeClass("full");
+        }
+    });
+    $("input[type=date]").on("change", function () {
+        if ($(this).val().length > 0) {
+            $(this).addClass("full");
+        } else {
+            $(this).removeClass("full");
+        }
+    });
+});
+
 // Cookies
 function createCookie(name, value, days) {
     var expires = "";
@@ -28,16 +45,29 @@ function eraseCookie(name) {
 }
 
 function getQueryValue(sql) {
-    $.ajax({
-        type: "POST",
-        url: "query.php",
+    var jsonRes;
+    request = $.ajax({
+        url: "php/actions/query.php",
+        type: "post",
+        dataType: "json",
         data: {
-            "action": "diklat",
-            "diklat": diklat
+            "QUERY": sql
         },
         cache: false,
-        success: function (msg) {
-            $("#angkatan").html(msg);
-        }
+        async: false,
     });
+
+    request.done(function (response, textStatus, jqXHR) {
+        jsonRes = response;
+    });
+
+    request.fail(function (jqXHR, textStatus, errorThrown) {
+        console.error(errorThrown);
+    });
+
+    request.always(function () {
+
+    });
+
+    return jsonRes;
 }
