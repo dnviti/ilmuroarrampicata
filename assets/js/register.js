@@ -34,19 +34,13 @@ $("#btn-register").click(function (event) {
 
     // Callback handler that will be called on success
     request.done(function (response, textStatus, jqXHR) {
-<<<<<<< HEAD
         HoldOn.close();
-=======
->>>>>>> e5a08dc4f6f9c331ad7d16fd3bc73e918f6d3adf
         alert("Utente registrato con successo");
         console.log(response);
     });
 
     request.fail(function (jqXHR, textStatus, errorThrown) {
-<<<<<<< HEAD
         HoldOn.close();
-=======
->>>>>>> e5a08dc4f6f9c331ad7d16fd3bc73e918f6d3adf
         alert("Errore: " + errorThrown);
         console.log(errorThrown);
     });
@@ -54,5 +48,20 @@ $("#btn-register").click(function (event) {
     request.always(function () {
 
     });
+
+});
+
+// altro javascript
+var userArr = ["", ""];
+$("#users_Nome, #users_Cognome").on("keyup", function () {
+    
+    if ($(this).attr("ID") == "users_Nome") {
+        userArr[0] = $(this).val();
+    }
+    if ($(this).attr("ID") == "users_Cognome") {
+        userArr[1] = $(this).val();
+    }
+
+    $("#users_Username").val(userArr[0].toLowerCase() + "." + userArr[1].toLowerCase());
 
 });

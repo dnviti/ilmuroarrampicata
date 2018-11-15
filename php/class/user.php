@@ -9,7 +9,6 @@ class User
         $conn = $GLOBALS["conn"];
         //var_dump($params);
         $sql = "INSERT INTO users (" . implode(",", array_keys($params)) . ") VALUES ('" . implode("','", $params) . "')";
-        $sqlLog = "INSERT INTO log_users (id_user, id_userre) VALUES (".$params[0].")";
         if ($conn->query($sql) === true) {
             return true;
         } else {

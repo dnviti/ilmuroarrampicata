@@ -1,3 +1,20 @@
+$(document).ready(function () {
+    $("input[type=date]").each(function () {
+        if ($(this).val().length > 0) {
+            $(this).addClass("full");
+        } else {
+            $(this).removeClass("full");
+        }
+    });
+    $("input[type=date]").on("change", function () {
+        if ($(this).val().length > 0) {
+            $(this).addClass("full");
+        } else {
+            $(this).removeClass("full");
+        }
+    });
+});
+
 // Cookies
 function createCookie(name, value, days) {
     var expires = "";
@@ -25,4 +42,32 @@ function readCookie(name) {
 
 function eraseCookie(name) {
     createCookie(name, "", -1);
+}
+
+function getQueryValue(sql) {
+    var jsonRes;
+    request = $.ajax({
+        url: "php/actions/query.php",
+        type: "post",
+        dataType: "json",
+        data: {
+            "QUERY": sql
+        },
+        cache: false,
+        async: false,
+    });
+
+    request.done(function (response, textStatus, jqXHR) {
+        jsonRes = response;
+    });
+
+    request.fail(function (jqXHR, textStatus, errorThrown) {
+        console.error(errorThrown);
+    });
+
+    request.always(function () {
+
+    });
+
+    return jsonRes;
 }
