@@ -7,6 +7,10 @@ class Component
 
         $query = file_get_contents($GLOBALS["paths"]["sql"] . $queryName . '.sql');
 
+        // echo '<pre>';
+        // var_dump($query);
+        // echo '</pre>';
+
         if (isset($query)) {
             if ($result = $conn->query($query)) {
 
