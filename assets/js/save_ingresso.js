@@ -54,6 +54,6 @@ $("#btn-save-ingresso").click(function (event) {
 // Altro javascript Pagina
 
 $("#lov_tipo_incasso").change(function () {
-    var newValue = getQueryValue("Select valore from anagrafica_incassi where id = " + $(this).val())[0];
+    var newValue = getQueryValue("Select valore from anagrafica_incassi where id = " + $(this).val());
     $("#registro_incassi_Valore").val(newValue["valore"]);
 });

@@ -69,5 +69,5 @@ function getQueryValue(sql) {
 
     });
 
-    return jsonRes;
+    return jsonRes[0];
 }

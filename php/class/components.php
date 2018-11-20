@@ -66,7 +66,7 @@ class Component
 
     public function selectFromQuery($queryName, $tableName, $colName, $type, $nullDisplay = null, $nullValue = "", $itemDefault = null, $label = null, $search = false, $class = '', $title = '')
     {
-        isset($_GET['ROWID']) ? $rowid = $_GET['ROWID'] : $rowid = null;
+        isset($_GET['ID']) ? $rowid = $_GET['ID'] : $rowid = null;
 
         // $type ['classic', 'search']
         $conn = $GLOBALS["conn"];
@@ -152,7 +152,7 @@ class Component
 
     public function itemFromColumn($tableName, $colName, $itemType, $itemDefault = null, $itemLabel = null, $attrib = null, $class = '', $title = '')
     {
-        isset($_GET['ROWID']) ? $rowid = $_GET['ROWID'] : $rowid = null;
+        isset($_GET['ID']) ? $rowid = $_GET['ID'] : $rowid = null;
 
         $conn = $GLOBALS["conn"];
 

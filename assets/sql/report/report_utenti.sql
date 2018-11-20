@@ -1,6 +1,6 @@
 select
 #concat('<img class="edit_row" src="/assets/third-part/open-iconic/svg/pencil.svg" alt="icon name">', '&nbsp;', '<img class="delete_row" src="/assets/third-part/open-iconic/svg/trash.svg" alt="icon name">') as azioni,
-concat(concat('<a href="?p=7&ROWID=', a.id, '">'), concat(a.cognome, '</br>', a.nome), '</a>') as Utente, 
+concat(concat('<a href="?p=7&ID=', a.id, '">'), concat(a.cognome, '</br>', a.nome), '</a>') as Utente, 
 	/*
 	a.username, 
 	a.password, a.email, a.data_nascita,
@@ -22,4 +22,6 @@ left join (select id_user, max(truncate(data,0)) max_datare from registro_incass
 left join (select id_user, truncate(data,0) as datare, max(id) max_id from registro_incassi group by id_user, truncate(data,0)) y on y.id_user=a.id and k.max_datare=y.datare
 left join registro_incassi i on y.max_id=i.id
 left join anagrafica_incassi c on i.id_tipo=c.id
+where a.obsoleto = 0
+and a.username != 'admin'
 order by a.cognome, a.nome

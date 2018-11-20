@@ -82,14 +82,19 @@ class Page
         $_components = new Component();
         $_templates = new Template();
 
-        if (!isset($_GET['ROWID']) || $_GET['ROWID'] == '') {
+        isset($_GET["ID"]) ? $rowId = $_GET["ID"] : $rowId = null;
+
+        $isObsoleto = json_decode($_components->valueFromQuery("SELECT obsoleto FROM users WHERE id = " . $rowId), true)[0]["obsoleto"];
+
+        if (!isset($_GET['ID']) || $_GET['ID'] == '') {
             $gridForm_btn = [
                 $_components->button('Crea Utente', 'primary', '', '', 'btn-register')
             ];
         } else {
             $gridForm_btn = [
                 $_components->button('Salva', 'success', '', '', 'btn-save'),
-                $_components->button('Elimina', 'danger', '', '', 'btn-delete')
+                // Visualizzo il bottone elimina solo se admin
+                ($_SESSION["IS_ADMIN"] == 1 ? $_components->button('Elimina', 'danger', '', '', 'btn-delete') : null)
             ];
         }
 
@@ -116,7 +121,7 @@ class Page
                 ]),
                 $_components->hGridRow([
                     $_components->itemFromColumn('users', 'username', 'text'),
-                    $_components->itemFromColumn('users', 'password', 'password'),
+                    $_components->itemFromColumn('users', 'password', 'password', null, null, (isset($rowId) ? 'disabled' : null)),
                 ]),
                 $_components->hGridRow([
                     $_components->itemFromColumn('users', 'email', 'email'),
@@ -125,17 +130,26 @@ class Page
                 $_components->hGridRow([
                     $_components->itemFromColumn('users', 'note', 'textarea')
                 ]),
+                ($isObsoleto == 1 ? 'Utente Obsoleto<br><br>' : '')
             ], 'f_register_items'),
-            $_components->hGridRow($gridForm_btn),
+            ($isObsoleto == 0 ? $_components->hGridRow($gridForm_btn) : ''),
             //Hidden Elements
+            $_components->itemFromColumn('users', 'id', 'hidden', $rowId),
             $_components->itemFromColumn('users', 'id_userre', 'hidden', $_SESSION["USER_ID"])
         ];
+
+        $jsObsoleto = "
+            $(document).ready(function(){
+                $isObsoleto == 1 ? alert('Attenzione! Utente Obsoleto attivo solo in consultazione') : null;
+            });
+        ";
 
         $page = ''
             . $_templates->header()
             . $_templates->slideMenu()
             . $_templates->body()
             . $_components->form($form_items, 'f-register')
+            . $_components->javaScript($jsObsoleto)
             . $_components->javaScriptFromFile('register')
             . $_components->javaScriptFromFile('slidemenu')
             . $_templates->footer($footer_objs);

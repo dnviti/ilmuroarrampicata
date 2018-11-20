@@ -16,6 +16,33 @@ class User
         }
     }
 
+    public function update($id, $params)
+    {
+        $conn = $GLOBALS["conn"];
+        $updVals = [];
+        foreach ($params as $key => $value) {
+            array_push($updVals, $key . '=\'' . $value . '\'');
+        }
+        $sql = "UPDATE users SET " . implode(",", $updVals) . " WHERE ID = $id";
+        if ($conn->query($sql) === true) {
+            return true;
+        } else {
+            return "Error: " . $conn->error;
+        }
+    }
+
+    public function delete($id)
+    {
+        $conn = $GLOBALS["conn"];
+        $sql = "UPDATE users SET OBSOLETO = 1 WHERE ID = $id";
+
+        if ($conn->query($sql) === true) {
+            return true;
+        } else {
+            return "Error: " . $conn->error;
+        }
+    }
+
     public function recoverPass($params)
     {
         $newPass = $params[2];
@@ -32,7 +59,7 @@ class User
 
     public function login($conn, $user, $pass)
     {
-        $sql = "SELECT password, id FROM users WHERE upper(username) = upper('$user')";
+        $sql = "SELECT password, id FROM users WHERE upper(username) = upper('$user') and obsoleto = 0";
 
         //var_dump($sql);
 
