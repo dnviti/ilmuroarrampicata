@@ -1,5 +1,4 @@
 $("#btn-save-ingresso").click(function (event) {
-
     event.preventDefault();
 
     var options = {};
@@ -24,7 +23,7 @@ $("#btn-save-ingresso").click(function (event) {
     };
 
     HoldOn.open(options);
-    //console.log(serializedData);
+    // console.log(serializedData);
 
     request = $.ajax({
         url: "php/actions/save_ingresso.php",
@@ -36,6 +35,7 @@ $("#btn-save-ingresso").click(function (event) {
     request.done(function (response, textStatus, jqXHR) {
         HoldOn.close();
         alert("Ingresso registrato");
+        location.href = "?p=1";
         console.log(response);
     });
 
@@ -48,12 +48,12 @@ $("#btn-save-ingresso").click(function (event) {
     request.always(function () {
 
     });
-
 });
 
 // Altro javascript Pagina
 
 $("#lov_tipo_incasso").change(function () {
-    var newValue = getQueryValue("Select valore from anagrafica_incassi where id = " + $(this).val());
+    var newValue = getQueryValue(
+        "Select valore from anagrafica_incassi where id = " + $(this).val());
     $("#registro_incassi_Valore").val(newValue["valore"]);
 });
