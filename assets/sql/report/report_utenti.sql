@@ -1,6 +1,6 @@
 select
-concat('<img class="edit_row" src="/assets/third-part/open-iconic/svg/pencil.svg" alt="icon name">', '&nbsp;', '<img class="delete_row" src="/assets/third-part/open-iconic/svg/trash.svg" alt="icon name">') as azioni,
-concat(a.cognome, '</br>', a.nome) as Utente, 
+#concat('<img class="edit_row" src="/assets/third-part/open-iconic/svg/pencil.svg" alt="icon name">', '&nbsp;', '<img class="delete_row" src="/assets/third-part/open-iconic/svg/trash.svg" alt="icon name">') as azioni,
+concat(concat('<a href="?p=7&ROWID=', a.id, '">'), concat(a.cognome, '</br>', a.nome), '</a>') as Utente, 
 	/*
 	a.username, 
 	a.password, a.email, a.data_nascita,

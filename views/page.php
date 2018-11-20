@@ -70,7 +70,6 @@ class Page
               $_components->logo('logo_solo_cai.png'),
               $_components->logo('solo_scritta_cai.png')
             ])
-            //. $_components->hGridRow(logo('logo.jpg')
             . $_components->htmlFromFile('login')
             . $_components->javaScriptFromFile('login')
             . $_templates->footer();
@@ -83,9 +82,16 @@ class Page
         $_components = new Component();
         $_templates = new Template();
 
-        $gridForm_btn = [
-            $_components->button('Crea Utente', 'primary', '', '', 'btn-register')
-        ];
+        if (!isset($_GET['ROWID']) || $_GET['ROWID'] == '') {
+            $gridForm_btn = [
+                $_components->button('Crea Utente', 'primary', '', '', 'btn-register')
+            ];
+        } else {
+            $gridForm_btn = [
+                $_components->button('Salva', 'success', '', '', 'btn-save'),
+                $_components->button('Elimina', 'danger', '', '', 'btn-delete')
+            ];
+        }
 
         $footer_objs = [
             // generazione Menu (codice in variabile pubblica di classe)
@@ -114,7 +120,7 @@ class Page
                 ]),
                 $_components->hGridRow([
                     $_components->itemFromColumn('users', 'email', 'email'),
-                    $_components->selectFromQuery('lov/lov_ruoli', 'id_role', 'classic', null, 'Ruolo'),
+                    $_components->selectFromQuery('lov/lov_ruoli', 'users', 'id_role', 'classic', 'Ruolo'),
                 ]),
                 $_components->hGridRow([
                     $_components->itemFromColumn('users', 'note', 'textarea')
@@ -156,8 +162,8 @@ class Page
         $form_items = [
             $_components->vGridRow([
                 $_components->hGridRow([
-                    $_components->selectFromQuery('lov/lov_users', 'id_user', 'search', null, 'Utente'),
-                    $_components->selectFromQuery('lov/lov_tipo_incasso', 'id_tipo', 'classic', null, 'Tipo Incasso'),
+                    $_components->selectFromQuery('lov/lov_users', 'registro_incassi', 'id_user', 'search', 'Utente'),
+                    $_components->selectFromQuery('lov/lov_tipo_incasso', 'registro_incassi', 'id_tipo', 'classic', 'Tipo Incasso'),
                 ]),
                 $_components->hGridRow([
                     $_components->itemFromColumn('registro_incassi', 'valore', 'number'),
