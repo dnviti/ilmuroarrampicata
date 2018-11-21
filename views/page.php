@@ -163,7 +163,7 @@ class Page
         $_templates = new Template();
 
         $gridForm_btn = [
-            $_components->button('Registra Incasso', 'primary', '', '', 'btn-save-ingresso')
+            $_components->button('Registra Ingresso', 'primary', '', '', 'btn-save-ingresso')
         ];
 
         $footer_objs = [
@@ -211,7 +211,7 @@ class Page
         $_templates = new Template();
 
         $gridRow_btn = [
-            $_components->button("Nuovo Incasso", "primary", "2"),
+            $_components->button("Nuovo Ingresso", "primary", "2"),
             $_components->button("Lista Utenti", "secondary", "6")
         ];
 
@@ -287,7 +287,7 @@ class Page
             . $_templates->slideMenu()
             . $_templates->body()
             . $_components->hGridRow($gridRow_btn, 'btnNav')
-            . $_components->tableFromQuery('report/report_completo', 'table_incassi', 'tbContainer', 'Lista Incassi')
+            . $_components->tableFromQuery('report/report_completo', 'table_incassi', 'tbContainer', 'Lista Ingressi')
             . $_components->javaScriptFromFile('slidemenu')
             . $_components->javaScript('$(document).ready(function() {$("#table_incassi").DataTable()})')
             . $_templates->footer($footer_objs);
