@@ -253,7 +253,7 @@ class Component
                 $result->close();
 
                 $jsonData = json_encode($valueArray);
-                
+                //var_dump($jsonData);
                 return $jsonData;
             }
         } else {

@@ -35,7 +35,7 @@ $("#btn-register").click(function (event) {
     request.done(function (response, textStatus, jqXHR) {
         HoldOn.close();
         alert("Utente registrato con successo");
-        location.reload();
+        location.href = "?p=1";
         console.log(response);
     });
 
@@ -87,7 +87,7 @@ $("#btn-save").click(function (event) {
     request.done(function (response, textStatus, jqXHR) {
         HoldOn.close();
         alert("Salvataggio Completato");
-        location.reload();
+        location.href = "?p=1";
         console.log(response);
     });
 
@@ -140,7 +140,7 @@ $("#btn-delete").click(function (event) {
         request.done(function (response, textStatus, jqXHR) {
             HoldOn.close();
             alert("Utente Cancellato");
-            //location.href = "?p=6";
+            location.href = "?p=1";
             console.log(response);
         });
 
