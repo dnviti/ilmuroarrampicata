@@ -260,7 +260,7 @@ class Page
             . $_components->hGridRow($gridRow_btn, 'btnNav')
             . $_components->tableFromQuery('report/report_utenti', 'table_utenti', 'tbContainer', 'Lista Utenti')
             . $_components->javaScriptFromFile('slidemenu')
-            . $_components->javaScript('$(document).ready(function() {$("#table_utenti").DataTable()})')
+            . $_components->javaScript('$(document).ready(function() {$("#table_utenti").DataTable({buttons: ["csv"]})})')
             . $_templates->footer($footer_objs);
 
         return $page;
