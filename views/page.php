@@ -86,6 +86,8 @@ class Page
 
         $isObsoleto = json_decode($_components->valueFromQuery("SELECT obsoleto FROM users WHERE id = " . $rowId), true)[0]["obsoleto"];
 
+        $isObsoleto == 1 ? $isObsoleto = 1 : $isObsoleto = 0;
+
         if (!isset($_GET['ID']) || $_GET['ID'] == '') {
             $gridForm_btn = [
                 $_components->button('Crea Utente', 'primary', '', '', 'btn-register')
