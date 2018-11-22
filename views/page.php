@@ -177,7 +177,7 @@ class Page
             $_components->vGridRow([
                 $_components->hGridRow([
                     $_components->selectFromQuery('lov/lov_users', 'registro_incassi', 'id_user', 'search', 'Utente'),
-                    $_components->selectFromQuery('lov/lov_tipo_incasso', 'registro_incassi', 'id_tipo', 'classic', 'Tipo Incasso'),
+                    $_components->selectFromQuery('lov/lov_tipo_incasso', 'registro_incassi', 'id_tipo', 'classic', 'Tipo Ingresso', '', null, null, false, 'disabled'),
                 ]),
                 $_components->hGridRow([
                     $_components->itemFromColumn('registro_incassi', 'valore', 'number'),
@@ -198,6 +198,7 @@ class Page
             . $_templates->slideMenu()
             . $_templates->body()
             . $_components->form($form_items, 'f-ingresso')
+            . $_components->hGridRow(['<span id="dettTesseraCai"></span>'])
             . $_components->javaScriptFromFile('save_ingresso')
             . $_components->javaScriptFromFile('slidemenu')
             . $_templates->footer($footer_objs);

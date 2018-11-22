@@ -71,3 +71,64 @@ function getQueryValue(sql) {
 
     return jsonRes;
 }
+
+function getQueryValueAsync(sql, callback) {
+    var jsonRes;
+    request = $.ajax({
+        url: "php/actions/query.php",
+        type: "post",
+        dataType: "json",
+        data: {
+            "QUERY": sql
+        },
+        cache: false,
+        async: true,
+    });
+
+    request.done(function (response, textStatus, jqXHR) {
+        callback(response);
+    });
+
+    request.fail(function (jqXHR, textStatus, errorThrown) {
+        console.error(errorThrown);
+    });
+
+    request.always(function () {
+
+    });
+}
+
+function json2Lov(lovId, jsonDict, nullDisplay) {
+    let dropdown = $("#" + lovId);
+
+    dropdown.empty();
+
+    dropdown.append("<option selected disabled>" + nullDisplay + "</option>");
+    dropdown.prop("selectedIndex", 0);
+
+    // Populate dropdown with list of provinces
+    $(jsonDict).each(function (i, v) {
+        dropdown.append($("<option></option>").attr("value", v["r"]).text(v["d"]));
+    });
+
+    return dropdown;
+}
+
+function json2Table(tableData) {
+    var table = $("<table class=\"table table-striped\"></table>");
+    var thead = $("<thead></thead>");
+    var hrow = $("<tr></tr>");
+    var tbody = $("<tbody></tbody>");
+    $(tableData).each(function (i, browData) {
+        var brow = $("<tr></tr>");
+        $.each(browData, function (j, cellData) {
+            hrow.append($("<th>" + j + "</th>"));
+            brow.append($("<td>" + cellData + "</td>"));
+        });
+        table.append(thead);
+        thead.append(hrow);
+        tbody.append(brow);
+        table.append(tbody);
+    });
+    return table;
+}

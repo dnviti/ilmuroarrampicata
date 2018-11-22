@@ -64,7 +64,7 @@ class Component
         }
     }
 
-    public function selectFromQuery($queryName, $tableName, $colName, $type, $nullDisplay = null, $nullValue = "", $itemDefault = null, $label = null, $search = false, $class = '', $title = '')
+    public function selectFromQuery($queryName, $tableName, $colName, $type, $nullDisplay = null, $nullValue = "", $itemDefault = null, $label = null, $search = false, $attrib = null, $class = '', $title = '')
     {
         isset($_GET['ID']) ? $rowid = $_GET['ID'] : $rowid = null;
 
@@ -106,11 +106,11 @@ class Component
 
                 switch ($type) {
                     case 'classic':
-                        $select = $select . '<select class="custom-select" name="'. strtoupper($colName) .'" id="'.explode('/', $queryName)[1].'">';
+                        $select = $select . '<select class="custom-select" name="'. strtoupper($colName) .'" id="'.explode('/', $queryName)[1].'" '.$attrib.'>';
 
                     break;
                     case 'search':
-                        $select = $select . '<br><select class="selectpicker" name="'. strtoupper($colName) .'" data-live-search="true" id="'.explode('/', $queryName)[1].'">';
+                        $select = $select . '<br><select class="selectpicker" name="'. strtoupper($colName) .'" data-live-search="true" id="'.explode('/', $queryName)[1].'" '.$attrib.'>';
                         break;
 
                 }

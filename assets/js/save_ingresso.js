@@ -53,12 +53,35 @@ $("#btn-save-ingresso").click(function (event) {
 // Altro javascript Pagina
 
 $("#lov_tipo_incasso").change(function () {
-    var newValue = getQueryValue(
-        "Select valore from anagrafica_incassi where id = " + $(this).val());
-    $("#registro_incassi_Valore").val(newValue[0]["valore"]);
+    getQueryValueAsync("Select valore from anagrafica_incassi where id = " + $(this).val(), function (json) {
+        $("#registro_incassi_Valore").val(json[0]["valore"]);
+    });
 });
 
 $("#lov_users").on("change", function () {
-    var newList = getQueryValue("SELECT tipo, id FROM anagrafica_incassi");
-    console.log(newList);
+    var idUser = $(this).val();
+    if (idUser > 0) {
+        // impostazione del tipo ingresso
+        getQueryValueAsync("SELECT count(*) as num_free FROM registro_incassi WHERE id_user = " + idUser + " and id_tipo = 1", function (json) {
+            isExpiredFree = json[0]["num_free"] >= 2 ? true : false;
+            if (isExpiredFree) {
+                getQueryValueAsync("SELECT tipo d, id r FROM anagrafica_incassi where id != 1", function (json) {
+                    json2Lov("lov_tipo_incasso", json, "Tipo Ingresso");
+                    $("#lov_tipo_incasso").prop("disabled", false);
+                });
+            } else {
+                getQueryValueAsync("SELECT tipo d, id r FROM anagrafica_incassi", function (json) {
+                    json2Lov("lov_tipo_incasso", json, "Tipo Ingresso");
+                    $("#lov_tipo_incasso").prop("disabled", false);
+                });
+            }
+        });
+        // mostrare i dati della tessera cai
+        getQueryValueAsync("SELECT Tessera_CAI as \"Tessera CAI\", anno_tessera as \"Anno Tessera\" FROM users WHERE id = " + idUser, function (json) {
+            $("#dettTesseraCai").empty();
+            $("#dettTesseraCai").append(json2Table(json[0]));
+        });
+    } else {
+        $("#lov_tipo_incasso").prop("disabled", true);
+    }
 });
