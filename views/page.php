@@ -127,7 +127,7 @@ class Page
                 ]),
                 $_components->hGridRow([
                     $_components->itemFromColumn('users', 'email', 'email'),
-                    $_components->selectFromQuery('lov/lov_ruoli', 'users', 'id_role', 'classic', 'Ruolo'),
+                    $_components->selectFromQuery('lov/lov_ruoli', 'users', 'id_role', 'classic', 'Ruolo', "", "NO", 0),
                 ]),
                 $_components->hGridRow([
                     $_components->itemFromColumn('users', 'note', 'textarea')

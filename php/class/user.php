@@ -7,8 +7,18 @@ class User
     public function register($params)
     {
         $conn = $GLOBALS["conn"];
-        //var_dump($params);
-        $sql = "INSERT INTO users (" . implode(",", array_keys($params)) . ") VALUES ('" . implode("','", $params) . "')";
+        // return(var_dump($params));
+        foreach ($params as $key => $value) {
+            if ($params[$key] == '') {
+                $params[$key] = 'NULL';
+            } else {
+                if (!is_numeric($params[$key])) {
+                    $params[$key] = '\'' . $params[$key] . '\'';
+                }
+            }
+        }
+        $sql = "INSERT INTO users (" . implode(",", array_keys($params)) . ") VALUES (" . implode(",", $params) . ")";
+        // return(var_dump($sql));
         if ($conn->query($sql) === true) {
             return true;
         } else {
