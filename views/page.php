@@ -232,7 +232,7 @@ class Page
             . $_components->hGridRow($gridRow_btn, 'btnNav')
             . $_components->tableFromQuery('report/report_homepage', 'table_ing_oggi', 'tbContainer', 'Ingressi Autorizzati Oggi')
             . $_components->javaScriptFromFile('slidemenu')
-            . $_components->javaScript('$(document).ready(function() {$("#table_ing_oggi").DataTable()})')
+            . $_components->javaScriptFromFile('homepage')
             . $_templates->footer($footer_objs);
 
         return $page;
@@ -262,7 +262,7 @@ class Page
             . $_components->hGridRow($gridRow_btn, 'btnNav')
             . $_components->tableFromQuery('report/report_utenti', 'table_utenti', 'tbContainer', 'Lista Utenti')
             . $_components->javaScriptFromFile('slidemenu')
-            . $_components->javaScript('$(document).ready(function() {$("#table_utenti").DataTable({buttons: ["csv"]})})')
+            . $_components->javaScriptFromFile('listaUtenti')
             . $_templates->footer($footer_objs);
 
         return $page;
@@ -275,7 +275,7 @@ class Page
         $_templates = new Template();
 
         $gridRow_btn = [
-            $_components->button("Nuovo Incasso", "Primary", "2")
+            $_components->button("Nuovo Ingresso", "Primary", "2")
         ];
 
         $footer_objs = [

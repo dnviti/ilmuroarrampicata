@@ -31,9 +31,19 @@ class User
         $conn = $GLOBALS["conn"];
         $updVals = [];
         foreach ($params as $key => $value) {
-            array_push($updVals, $key . '=\'' . $value . '\'');
+            if ($params[$key] == '') {
+                $params[$key] = 'NULL';
+            } else {
+                if (!is_numeric($params[$key])) {
+                    $params[$key] = '\'' . $params[$key] . '\'';
+                }
+            }
+        }
+        foreach ($params as $key => $value) {
+            array_push($updVals, $key . '=' . $value);
         }
         $sql = "UPDATE users SET " . implode(",", $updVals) . " WHERE ID = $id";
+        // return(var_dump($sql));
         if ($conn->query($sql) === true) {
             return true;
         } else {

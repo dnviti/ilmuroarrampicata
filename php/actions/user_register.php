@@ -42,5 +42,5 @@ if (!isset($_POST["ID"]) || $_POST["ID"] == "" || $_POST["ID"] == " ") {
         "ANNO_TESSERA" => $_POST["ANNO_TESSERA"]
     );
 
-    $_user->update($_POST["ID"], $params);
+    return($_user->update($_POST["ID"], $params));
 }
