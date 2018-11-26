@@ -164,9 +164,19 @@ class Page
         $_components = new Component();
         $_templates = new Template();
 
-        $gridForm_btn = [
-            $_components->button('Registra Ingresso', 'primary', '', '', 'btn-save-ingresso')
-        ];
+        isset($_GET["ID"]) ? $rowId = $_GET["ID"] : $rowId = null;
+
+        if (!isset($_GET['ID']) || $_GET['ID'] == '') {
+            $gridForm_btn = [
+                $_components->button('Registra Ingresso', 'primary', '', '', 'btn-create-ingresso')
+            ];
+        } else {
+            $gridForm_btn = [
+                $_components->button('Salva', 'success', '', '', 'btn-save-ingresso'),
+                // Visualizzo il bottone elimina solo se admin
+                ($_SESSION["IS_ADMIN"] == 1 ? $_components->button('Elimina', 'danger', '', '', 'btn-delete-ingresso') : null)
+            ];
+        }
 
         $footer_objs = [
             // generazione Menu (codice in variabile pubblica di classe)
@@ -192,6 +202,7 @@ class Page
             ], 'f_register_items'),
             $_components->hGridRow($gridForm_btn),
             //Hidden Elements
+            $_components->itemFromColumn('registro_incassi', 'id', 'hidden', $rowId),
             $_components->itemFromColumn('registro_incassi', 'id_userre', 'hidden', $_SESSION["USER_ID"])
         ];
 

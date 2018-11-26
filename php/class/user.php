@@ -22,6 +22,7 @@ class User
         if ($conn->query($sql) === true) {
             return true;
         } else {
+            die(header("HTTP/1.0 500 " . $conn->error));
             return "Error: " . $conn->error;
         }
     }
@@ -47,6 +48,7 @@ class User
         if ($conn->query($sql) === true) {
             return true;
         } else {
+            die(header("HTTP/1.0 500 " . $conn->error));
             return "Error: " . $conn->error;
         }
     }
@@ -59,6 +61,7 @@ class User
         if ($conn->query($sql) === true) {
             return true;
         } else {
+            die(header("HTTP/1.0 500 " . $conn->error));
             return "Error: " . $conn->error;
         }
     }
@@ -73,6 +76,7 @@ class User
         if ($conn->query($sql) === true) {
             return true;
         } else {
+            die(header("HTTP/1.0 500 " . $conn->error));
             return "Error: " . $conn->error;
         }
     }

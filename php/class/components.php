@@ -154,6 +154,10 @@ class Component
     {
         isset($_GET['ID']) ? $rowid = $_GET['ID'] : $rowid = null;
 
+        if ($itemDefault == null) {
+            $itemVal = '';
+        }
+        
         $conn = $GLOBALS["conn"];
 
         if ($rowid != null) {
@@ -171,6 +175,9 @@ class Component
                 }
                 $result->close();
             }
+        }
+        if ($itemType == 'date' || $itemType == 'DATE') {
+            $itemVal = substr($itemVal, 0, 10);
         }
 
         // Fetch column properties
@@ -207,7 +214,7 @@ class Component
                             $itemDefault = $itemData['Default'];
                         }
                     }
-
+                    
                     if (isset($itemVal)) {
                         $itemDefault = $itemVal;
                     }
