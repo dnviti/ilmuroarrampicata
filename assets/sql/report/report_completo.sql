@@ -1,4 +1,4 @@
-select concat(a.cognome,' ',a.nome) Utente, 
+select concat(concat('<a href="?p=2&ID=', r.id, '">'), concat(a.cognome, '</br>', a.nome), '</a>') as Utente, 
 	concat(i.tipo,' ', DATE_FORMAT(r.data, "%d/%m/%Y")) as Movim, 
 	concat(r.valore,' €') as Val, 
 	concat(s.cognome,' ',s.nome) Referente

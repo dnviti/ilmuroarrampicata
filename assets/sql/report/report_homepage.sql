@@ -1,4 +1,4 @@
-select concat(a.cognome,' ',a.nome) as Utente,
+select concat(concat('<a href="?p=2&ID=', r.id, '">'), concat(a.cognome, '</br>', a.nome), '</a>') as Utente, 
 i.tipo as Tipo,
 DATE_FORMAT(truncate(date_add(truncate(r.data, 0),interval i.gg_validita day),0), "%d/%m/%Y") as Scadenza,
 concat(r.valore,' €') as Valore

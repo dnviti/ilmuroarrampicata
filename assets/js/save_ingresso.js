@@ -1,4 +1,4 @@
-$("#btn-save-ingresso").click(function (event) {
+$("#btn-create-ingresso").click(function (event) {
     event.preventDefault();
 
     var options = {};

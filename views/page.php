@@ -165,7 +165,7 @@ class Page
         $_templates = new Template();
 
         $gridForm_btn = [
-            $_components->button('Registra Ingresso', 'primary', '', '', 'btn-save-ingresso')
+            $_components->button('Registra Ingresso', 'primary', '', '', 'btn-create-ingresso')
         ];
 
         $footer_objs = [
