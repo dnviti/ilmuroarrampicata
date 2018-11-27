@@ -7,11 +7,61 @@ class User
     public function register($params)
     {
         $conn = $GLOBALS["conn"];
-        //var_dump($params);
-        $sql = "INSERT INTO users (" . implode(",", array_keys($params)) . ") VALUES ('" . implode("','", $params) . "')";
+        // return(var_dump($params));
+        foreach ($params as $key => $value) {
+            if ($params[$key] == '') {
+                $params[$key] = 'NULL';
+            } else {
+                if (!is_numeric($params[$key])) {
+                    $params[$key] = '\'' . $params[$key] . '\'';
+                }
+            }
+        }
+        $sql = "INSERT INTO users (" . implode(",", array_keys($params)) . ") VALUES (" . implode(",", $params) . ")";
+        // return(var_dump($sql));
         if ($conn->query($sql) === true) {
             return true;
         } else {
+            die(header("HTTP/1.0 500 " . $conn->error));
+            return "Error: " . $conn->error;
+        }
+    }
+
+    public function update($id, $params)
+    {
+        $conn = $GLOBALS["conn"];
+        $updVals = [];
+        foreach ($params as $key => $value) {
+            if ($params[$key] == '') {
+                $params[$key] = 'NULL';
+            } else {
+                if (!is_numeric($params[$key])) {
+                    $params[$key] = '\'' . $params[$key] . '\'';
+                }
+            }
+        }
+        foreach ($params as $key => $value) {
+            array_push($updVals, $key . '=' . $value);
+        }
+        $sql = "UPDATE users SET " . implode(",", $updVals) . " WHERE ID = $id";
+        // return(var_dump($sql));
+        if ($conn->query($sql) === true) {
+            return true;
+        } else {
+            die(header("HTTP/1.0 500 " . $conn->error));
+            return "Error: " . $conn->error;
+        }
+    }
+
+    public function delete($id)
+    {
+        $conn = $GLOBALS["conn"];
+        $sql = "UPDATE users SET OBSOLETO = 1 WHERE ID = $id";
+
+        if ($conn->query($sql) === true) {
+            return true;
+        } else {
+            die(header("HTTP/1.0 500 " . $conn->error));
             return "Error: " . $conn->error;
         }
     }
@@ -26,13 +76,14 @@ class User
         if ($conn->query($sql) === true) {
             return true;
         } else {
+            die(header("HTTP/1.0 500 " . $conn->error));
             return "Error: " . $conn->error;
         }
     }
 
     public function login($conn, $user, $pass)
     {
-        $sql = "SELECT password, id FROM users WHERE upper(username) = upper('$user')";
+        $sql = "SELECT password, id FROM users WHERE upper(username) = upper('$user') and obsoleto = 0";
 
         //var_dump($sql);
 

@@ -7,6 +7,10 @@ class Component
 
         $query = file_get_contents($GLOBALS["paths"]["sql"] . $queryName . '.sql');
 
+        // echo '<pre>';
+        // var_dump($query);
+        // echo '</pre>';
+
         if (isset($query)) {
             if ($result = $conn->query($query)) {
 
@@ -60,10 +64,31 @@ class Component
         }
     }
 
-    public function selectFromQuery($queryName, $name, $type = 'classic', $label = null, $nullDisplay = 'Select Option', $nullValue = '', $search = false, $class = '', $title = '')
+    public function selectFromQuery($queryName, $tableName, $colName, $type, $nullDisplay = null, $nullValue = "", $nullable = "NO", $itemDefault = null, $label = null, $search = false, $attrib = null, $class = '', $title = '')
     {
+        isset($_GET['ID']) ? $rowid = $_GET['ID'] : $rowid = null;
+
         // $type ['classic', 'search']
         $conn = $GLOBALS["conn"];
+
+        if ($rowid != null) {
+            $query = "SELECT $colName FROM $tableName WHERE ID = $rowid";
+        }
+
+        // Fetch column data by id
+
+        if (isset($query)) {
+            if ($result = $conn->query($query)) {
+                while ($tableRows = $result->fetch_assoc()) {
+                    foreach ($tableRows as &$value) {
+                        $itemVal = $value;
+                    }
+                }
+                $result->close();
+            }
+        }
+
+        // Fetch column properties
 
         $query = file_get_contents($GLOBALS["paths"]["sql"] . $queryName . '.sql');
 
@@ -81,11 +106,11 @@ class Component
 
                 switch ($type) {
                     case 'classic':
-                        $select = $select . '<select class="custom-select" name="'. strtoupper($name) .'" id="'.explode('/', $queryName)[1].'">';
+                        $select = $select . '<select class="custom-select" aria-nullable="'.$nullable.'" name="'. strtoupper($colName) .'" id="'.explode('/', $queryName)[1].'" '.$attrib.'>';
 
                     break;
                     case 'search':
-                        $select = $select . '<br><select class="selectpicker" name="'. strtoupper($name) .'" data-live-search="true" id="'.explode('/', $queryName)[1].'">';
+                        $select = $select . '<br><select class="selectpicker" aria-nullable="'.$nullable.'" name="'. strtoupper($colName) .'" data-live-search="true" id="'.explode('/', $queryName)[1].'" '.$attrib.'>';
                         break;
 
                 }
@@ -98,20 +123,28 @@ class Component
                 $lovValues[0] = $lovDisplay;
                 $lovValues[1] = $lovReturn;
 
-                $select = $select . '<option value="'.$nullValue.'" selected disabled>' . $nullDisplay . '</option>';
-
-                for ($i = 0; $i < count($lovValues[0]); $i++) {
-                    $display = $lovValues[0][$i];
-                    $return = $lovValues[1][$i];
-                    $select = $select . '<option value="' . $return . '">' . $display . '</option>';
+                if (isset($itemVal)) {
+                    $itemDefault = $itemVal;
                 }
 
-                $select = $select . '</select>';
-
-                $result->close();
-
-                return $select;
+                if ($nullDisplay != null) {
+                    $itemDefault != null ? $selected = "" : $selected = " selected";
+                }
+                $select = $select . '<option value="' . $nullValue . '"'.$selected.' disabled>' . $nullDisplay . '</option>';
             }
+
+            for ($i = 0; $i < count($lovValues[0]); $i++) {
+                $display = $lovValues[0][$i];
+                $return = $lovValues[1][$i];
+                $itemDefault == $return ? $selected = " selected" : $selected = "";
+                $select = $select . '<option value="' . $return . '"'.$selected.'>' . $display . '</option>';
+            }
+
+            $select = $select . '</select>';
+
+            $result->close();
+
+            return $select;
         } else {
             return "ERROR: No query defined";
         }
@@ -119,7 +152,35 @@ class Component
 
     public function itemFromColumn($tableName, $colName, $itemType, $itemDefault = null, $itemLabel = null, $attrib = null, $class = '', $title = '')
     {
+        isset($_GET['ID']) ? $rowid = $_GET['ID'] : $rowid = null;
+
+        if ($itemDefault == null) {
+            $itemVal = '';
+        }
+        
         $conn = $GLOBALS["conn"];
+
+        if ($rowid != null) {
+            $query = "SELECT $colName FROM $tableName WHERE ID = $rowid";
+        }
+
+        // Fetch column data by id
+
+        if (isset($query)) {
+            if ($result = $conn->query($query)) {
+                while ($tableRows = $result->fetch_assoc()) {
+                    foreach ($tableRows as &$value) {
+                        $itemVal = $value;
+                    }
+                }
+                $result->close();
+            }
+        }
+        if ($itemType == 'date' || $itemType == 'DATE') {
+            $itemVal = substr($itemVal, 0, 10);
+        }
+
+        // Fetch column properties
 
         $query = "SHOW FIELDS FROM $tableName where upper(field) = upper('$colName')";
 
@@ -145,12 +206,20 @@ class Component
                     $item = '<label  for="' . $tableName . '_' . $itemData['Field'] . '">' . str_replace('_', ' ', $itemLabel) . '</label>';
                 }
 
-                if ($itemDefault == null) {
-                    if ($itemData['Default'] == 'CURRENT_TIMESTAMP') {
-                        $itemDefault = date("Y-m-j");
-                    } else {
-                        $itemDefault = $itemData['Default'];
+                if ($itemType != "password") {
+                    if ($itemDefault == null) {
+                        if ($itemData['Default'] == 'CURRENT_TIMESTAMP') {
+                            $itemDefault = date("Y-m-j");
+                        } else {
+                            $itemDefault = $itemData['Default'];
+                        }
                     }
+                    
+                    if (isset($itemVal)) {
+                        $itemDefault = $itemVal;
+                    }
+                } else {
+                    $itemDefault = null;
                 }
 
                 switch ($itemType) {
@@ -191,7 +260,7 @@ class Component
                 $result->close();
 
                 $jsonData = json_encode($valueArray);
-                
+                //var_dump($jsonData);
                 return $jsonData;
             }
         } else {

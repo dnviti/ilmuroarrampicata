@@ -75,7 +75,7 @@ class Template
                 </div>
                     <h6>Gestione Ingressi</h6>
                     <div class="row">
-                        <a href="?p=2" id="m-p2" class="list-group-item list-group-item-action">Nuovo Incasso</a>
+                        <a href="?p=2" id="m-p2" class="list-group-item list-group-item-action">Nuovo Ingresso</a>
                         <a href="?p=3" id="m-p3" class="list-group-item list-group-item-action">Lista Ingressi</a>
                         <!--
                         <a href="?p=4" id="m-p4" class="list-group-item list-group-item-action">Lista Abbonamenti</a>

@@ -149,3 +149,5 @@ $(document).ready(function () {
 $("#change-pass").click(function () {
     console.log("changing password");
 });
+
+// Abilita il click sull'utente per la modifica 

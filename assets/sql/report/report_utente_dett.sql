@@ -1,0 +1,1 @@
+SELECT Tessera_CAI, anno_tessera FROM users WHERE id = :IDUSER:

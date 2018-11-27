@@ -34,6 +34,7 @@ module.exports = {
         ],
         "no-unused-vars": [
             "off"
-        ]
+        ],
+        "indent": ["off"]
     }
 };

@@ -70,7 +70,6 @@ class Page
               $_components->logo('logo_solo_cai.png'),
               $_components->logo('solo_scritta_cai.png')
             ])
-            //. $_components->hGridRow(logo('logo.jpg')
             . $_components->htmlFromFile('login')
             . $_components->javaScriptFromFile('login')
             . $_templates->footer();
@@ -83,9 +82,23 @@ class Page
         $_components = new Component();
         $_templates = new Template();
 
-        $gridForm_btn = [
-            $_components->button('Crea Utente', 'primary', '', '', 'btn-register')
-        ];
+        isset($_GET["ID"]) ? $rowId = $_GET["ID"] : $rowId = null;
+
+        $isObsoleto = json_decode($_components->valueFromQuery("SELECT obsoleto FROM users WHERE id = " . $rowId), true)[0]["obsoleto"];
+
+        $isObsoleto == 1 ? $isObsoleto = 1 : $isObsoleto = 0;
+
+        if (!isset($_GET['ID']) || $_GET['ID'] == '') {
+            $gridForm_btn = [
+                $_components->button('Crea Utente', 'primary', '', '', 'btn-register')
+            ];
+        } else {
+            $gridForm_btn = [
+                $_components->button('Salva', 'success', '', '', 'btn-save'),
+                // Visualizzo il bottone elimina solo se admin
+                ($_SESSION["IS_ADMIN"] == 1 ? $_components->button('Elimina', 'danger', '', '', 'btn-delete') : null)
+            ];
+        }
 
         $footer_objs = [
             // generazione Menu (codice in variabile pubblica di classe)
@@ -110,26 +123,35 @@ class Page
                 ]),
                 $_components->hGridRow([
                     $_components->itemFromColumn('users', 'username', 'text'),
-                    $_components->itemFromColumn('users', 'password', 'password'),
+                    $_components->itemFromColumn('users', 'password', 'password', null, null, (isset($rowId) ? 'disabled' : null)),
                 ]),
                 $_components->hGridRow([
                     $_components->itemFromColumn('users', 'email', 'email'),
-                    $_components->selectFromQuery('lov/lov_ruoli', 'id_role', 'classic', null, 'Ruolo'),
+                    $_components->selectFromQuery('lov/lov_ruoli', 'users', 'id_role', 'classic', 'Ruolo', "", "NO", 0),
                 ]),
                 $_components->hGridRow([
                     $_components->itemFromColumn('users', 'note', 'textarea')
                 ]),
+                ($isObsoleto == 1 ? 'Utente Obsoleto<br><br>' : '')
             ], 'f_register_items'),
-            $_components->hGridRow($gridForm_btn),
+            ($isObsoleto == 0 ? $_components->hGridRow($gridForm_btn) : ''),
             //Hidden Elements
+            $_components->itemFromColumn('users', 'id', 'hidden', $rowId),
             $_components->itemFromColumn('users', 'id_userre', 'hidden', $_SESSION["USER_ID"])
         ];
+
+        $jsObsoleto = "
+            $(document).ready(function(){
+                $isObsoleto == 1 ? alert('Attenzione! Utente Obsoleto attivo solo in consultazione') : null;
+            });
+        ";
 
         $page = ''
             . $_templates->header()
             . $_templates->slideMenu()
             . $_templates->body()
             . $_components->form($form_items, 'f-register')
+            . $_components->javaScript($jsObsoleto)
             . $_components->javaScriptFromFile('register')
             . $_components->javaScriptFromFile('slidemenu')
             . $_templates->footer($footer_objs);
@@ -142,9 +164,19 @@ class Page
         $_components = new Component();
         $_templates = new Template();
 
-        $gridForm_btn = [
-            $_components->button('Registra Incasso', 'primary', '', '', 'btn-save-ingresso')
-        ];
+        isset($_GET["ID"]) ? $rowId = $_GET["ID"] : $rowId = null;
+
+        if (!isset($_GET['ID']) || $_GET['ID'] == '') {
+            $gridForm_btn = [
+                $_components->button('Registra Ingresso', 'primary', '', '', 'btn-create-ingresso')
+            ];
+        } else {
+            $gridForm_btn = [
+                $_components->button('Salva', 'success', '', '', 'btn-save-ingresso'),
+                // Visualizzo il bottone elimina solo se admin
+                ($_SESSION["IS_ADMIN"] == 1 ? $_components->button('Elimina', 'danger', '', '', 'btn-delete-ingresso') : null)
+            ];
+        }
 
         $footer_objs = [
             // generazione Menu (codice in variabile pubblica di classe)
@@ -156,8 +188,8 @@ class Page
         $form_items = [
             $_components->vGridRow([
                 $_components->hGridRow([
-                    $_components->selectFromQuery('lov/lov_users', 'id_user', 'search', null, 'Utente'),
-                    $_components->selectFromQuery('lov/lov_tipo_incasso', 'id_tipo', 'classic', null, 'Tipo Incasso'),
+                    $_components->selectFromQuery('lov/lov_users', 'registro_incassi', 'id_user', 'search', 'Utente'),
+                    $_components->selectFromQuery('lov/lov_tipo_incasso', 'registro_incassi', 'id_tipo', 'classic', 'Tipo Ingresso', '', null, null, false, 'disabled'),
                 ]),
                 $_components->hGridRow([
                     $_components->itemFromColumn('registro_incassi', 'valore', 'number'),
@@ -170,6 +202,7 @@ class Page
             ], 'f_register_items'),
             $_components->hGridRow($gridForm_btn),
             //Hidden Elements
+            $_components->itemFromColumn('registro_incassi', 'id', 'hidden', $rowId),
             $_components->itemFromColumn('registro_incassi', 'id_userre', 'hidden', $_SESSION["USER_ID"])
         ];
 
@@ -178,6 +211,7 @@ class Page
             . $_templates->slideMenu()
             . $_templates->body()
             . $_components->form($form_items, 'f-ingresso')
+            . $_components->hGridRow(['<span id="dettTesseraCai"></span>'])
             . $_components->javaScriptFromFile('save_ingresso')
             . $_components->javaScriptFromFile('slidemenu')
             . $_templates->footer($footer_objs);
@@ -191,7 +225,7 @@ class Page
         $_templates = new Template();
 
         $gridRow_btn = [
-            $_components->button("Nuovo Incasso", "primary", "2"),
+            $_components->button("Nuovo Ingresso", "primary", "2"),
             $_components->button("Lista Utenti", "secondary", "6")
         ];
 
@@ -209,7 +243,7 @@ class Page
             . $_components->hGridRow($gridRow_btn, 'btnNav')
             . $_components->tableFromQuery('report/report_homepage', 'table_ing_oggi', 'tbContainer', 'Ingressi Autorizzati Oggi')
             . $_components->javaScriptFromFile('slidemenu')
-            . $_components->javaScript('$(document).ready(function() {$("#table_ing_oggi").DataTable()})')
+            . $_components->javaScriptFromFile('homepage')
             . $_templates->footer($footer_objs);
 
         return $page;
@@ -239,7 +273,7 @@ class Page
             . $_components->hGridRow($gridRow_btn, 'btnNav')
             . $_components->tableFromQuery('report/report_utenti', 'table_utenti', 'tbContainer', 'Lista Utenti')
             . $_components->javaScriptFromFile('slidemenu')
-            . $_components->javaScript('$(document).ready(function() {$("#table_utenti").DataTable()})')
+            . $_components->javaScriptFromFile('listaUtenti')
             . $_templates->footer($footer_objs);
 
         return $page;
@@ -252,7 +286,7 @@ class Page
         $_templates = new Template();
 
         $gridRow_btn = [
-            $_components->button("Nuovo Incasso", "Primary", "2")
+            $_components->button("Nuovo Ingresso", "Primary", "2")
         ];
 
         $footer_objs = [
@@ -267,7 +301,7 @@ class Page
             . $_templates->slideMenu()
             . $_templates->body()
             . $_components->hGridRow($gridRow_btn, 'btnNav')
-            . $_components->tableFromQuery('report/report_completo', 'table_incassi', 'tbContainer', 'Lista Incassi')
+            . $_components->tableFromQuery('report/report_completo', 'table_incassi', 'tbContainer', 'Lista Ingressi')
             . $_components->javaScriptFromFile('slidemenu')
             . $_components->javaScript('$(document).ready(function() {$("#table_incassi").DataTable()})')
             . $_templates->footer($footer_objs);
