@@ -35,7 +35,11 @@ $("#btn-create-ingresso").click(function (event) {
     request.done(function (response, textStatus, jqXHR) {
         HoldOn.close();
         alert("Ingresso registrato");
+<<<<<<< HEAD
         // location.href = "?p=1";
+=======
+        location.href = "?p=1";
+>>>>>>> 550e05968cc389ee0f75b0f66b27174a6843a8f2
         console.log(response);
     });
 
@@ -48,6 +52,7 @@ $("#btn-create-ingresso").click(function (event) {
     request.always(function () {
 
     });
+<<<<<<< HEAD
 });
 
 $("#btn-save-ingresso").click(function (event) {
@@ -152,6 +157,8 @@ $("#btn-delete-ingresso").click(function (event) {
     request.always(function () {
 
     });
+=======
+>>>>>>> 550e05968cc389ee0f75b0f66b27174a6843a8f2
 });
 
 // Altro javascript Pagina
