@@ -164,11 +164,14 @@ class Page
         $_components = new Component();
         $_templates = new Template();
 
+<<<<<<< HEAD
         $isAdmin = $_SESSION["IS_ADMIN"];
         $userId = $_SESSION["USER_ID"];
 
         $userIsEnabled = json_decode($_components->valueFromQuery("SELECT count(*) as count FROM registro_incassi WHERE id_userre = $userId or $isAdmin = 1"), true)[0];
         
+=======
+>>>>>>> 7352a442c5368c84806314947c7333c3e1737b56
         isset($_GET["ID"]) ? $rowId = $_GET["ID"] : $rowId = null;
 
         if (!isset($_GET['ID']) || $_GET['ID'] == '') {
@@ -177,9 +180,15 @@ class Page
             ];
         } else {
             $gridForm_btn = [
+<<<<<<< HEAD
                 ($userIsEnabled["count"] > 0 ? $_components->button('Salva', 'success', '', '', 'btn-save-ingresso') : null),
                 // Visualizzo il bottone elimina solo se admin
                 ($userIsEnabled["count"] > 0 ? $_components->button('Elimina', 'danger', '', '', 'btn-delete-ingresso') : null)
+=======
+                $_components->button('Salva', 'success', '', '', 'btn-save-ingresso'),
+                // Visualizzo il bottone elimina solo se admin
+                ($_SESSION["IS_ADMIN"] == 1 ? $_components->button('Elimina', 'danger', '', '', 'btn-delete-ingresso') : null)
+>>>>>>> 7352a442c5368c84806314947c7333c3e1737b56
             ];
         }
 
