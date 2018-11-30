@@ -184,6 +184,14 @@ $("#lov_users").on("change", function () {
         getQueryValueAsync("SELECT Tessera_CAI as \"Tessera CAI\", anno_tessera as \"Anno Tessera\" FROM users WHERE id = " + idUser, function (json) {
             $("#dettTesseraCai").empty();
             $("#dettTesseraCai").append(json2Table(json[0]));
+
+            var queryAnnoTessera = "select count(*) as count from users where datediff(date_sub(date_add(STR_TO_DATE(concat('01-01-', anno_tessera + 1),'%d-%m-%Y'), INTERVAL 3 month), INTERVAL 1 day), NOW()) <= 0 and id = 19";
+            getQueryValueAsync(queryAnnoTessera, function (json) {
+                // tessera scaduta
+                if (json[0]["count"] > 0) {
+                    $("#dettTesseraCai table tbody tr").css("background-color", "#ff2c2c");
+                }
+            });
         });
     } else {
         $("#lov_tipo_incasso").prop("disabled", true);
